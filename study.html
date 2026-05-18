@@ -537,6 +537,11 @@ c1.A::f();   <span class="c">// 明确调用基类 A 的 f()</span></pre>
 
         <div class="chart-wrap">
           <svg viewBox="0 0 680 180" width="100%">
+            <defs>
+              <marker id="arr4a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
             <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">类 与 对象 的关系</text>
 
             <!-- 类（蓝图） -->
@@ -550,8 +555,8 @@ c1.A::f();   <span class="c">// 明确调用基类 A 的 f()</span></pre>
             <text x="66" y="154" font-size="11" fill="#6b7280"> void display();</text>
 
             <!-- 箭头 -->
-            <line x1="280" y1="80" x2="320" y2="80" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
-            <line x1="280" y1="120" x2="320" y2="120" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="280" y1="80" x2="320" y2="80" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4a)"/>
+            <line x1="280" y1="120" x2="320" y2="120" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4a)"/>
             <text x="300" y="72" text-anchor="middle" font-size="10" fill="#6c757d">实例化</text>
             <text x="300" y="140" text-anchor="middle" font-size="10" fill="#6c757d">（按图建房）</text>
 
@@ -726,19 +731,24 @@ sort(arr.begin(), arr.end());      <span class="c">// 从小到大排序（需 #
 
         <div class="chart-wrap">
           <svg viewBox="0 0 680 140" width="100%">
+            <defs>
+              <marker id="arr4b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
             <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">构造函数自动执行流程</text>
 
             <rect x="60" y="44" width="160" height="44" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
             <text x="140" y="66" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">创建对象</text>
             <text x="140" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">构造函数被调用</text>
 
-            <line x1="220" y1="66" x2="280" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="220" y1="66" x2="280" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4b)"/>
 
             <rect x="280" y="44" width="120" height="44" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
             <text x="340" y="66" text-anchor="middle" font-size="13" fill="#0f6e56" dominant-baseline="central">初始化数据</text>
             <text x="340" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">hour=0, minute=0, sec=0</text>
 
-            <line x1="400" y1="66" x2="460" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="400" y1="66" x2="460" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4b)"/>
 
             <rect x="460" y="44" width="160" height="44" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
             <text x="540" y="66" text-anchor="middle" font-size="13" fill="#dc2626" dominant-baseline="central">对象可用</text>
@@ -1142,20 +1152,25 @@ cout << (s1 > s2);   <span class="c">// 1 (true)，因为 'H' > 'B'</span></pre>
 
         <div class="chart-wrap">
           <svg viewBox="0 0 680 180" width="100%">
-            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">继承层次图——多层派生</text>
+            <defs>
+              <marker id="arr4d" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">继承层次图——多层派生</text>
 
             <!-- 基类 -->
             <rect x="220" y="40" width="240" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
             <text x="340" y="63" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">Student 基类：num, name, display()</text>
 
-            <line x1="340" y1="76" x2="340" y2="92" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="340" y1="76" x2="340" y2="92" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4d)"/>
             <text x="355" y="86" font-size="11" fill="#6c757d">public 继承</text>
 
             <!-- 派生类1 -->
             <rect x="220" y="94" width="240" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
             <text x="340" y="117" text-anchor="middle" font-size="13" fill="#0f6e56" dominant-baseline="central">Student1: num,name,display(), +age</text>
 
-            <line x1="340" y1="130" x2="340" y2="146" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="340" y1="130" x2="340" y2="146" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4d)"/>
             <text x="355" y="140" font-size="11" fill="#6c757d">public 继承</text>
 
             <!-- 派生类2 -->
@@ -1233,15 +1248,20 @@ Student2(<span class="t">int</span> n, <span class="t">string</span> nam, <span 
 
         <div class="chart-wrap">
           <svg viewBox="0 0 680 180" width="100%">
-            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">菱形继承：同一份数据被继承两次</text>
+            <defs>
+              <marker id="arr4e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">菱形继承：同一份数据被继承两次</text>
 
             <!-- 顶层基类 N -->
             <rect x="240" y="40" width="200" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
             <text x="340" y="63" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">class N { int a; }</text>
 
-            <line x1="290" y1="76" x2="240" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="290" y1="76" x2="240" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4e)"/>
             <text x="250" y="92" font-size="11" fill="#6c757d">virtual</text>
-            <line x1="390" y1="76" x2="440" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="390" y1="76" x2="440" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4e)"/>
             <text x="430" y="92" font-size="11" fill="#6c757d">virtual</text>
 
             <!-- 中间层 A B -->
@@ -1251,8 +1271,8 @@ Student2(<span class="t">int</span> n, <span class="t">string</span> nam, <span 
             <rect x="360" y="104" width="160" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
             <text x="440" y="127" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">class B: virtual public N</text>
 
-            <line x1="280" y1="140" x2="320" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
-            <line x1="400" y1="140" x2="360" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="280" y1="140" x2="320" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4e)"/>
+            <line x1="400" y1="140" x2="360" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4e)"/>
 
             <!-- 底层 -->
             <rect x="240" y="158" width="200" height="36" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
@@ -1344,20 +1364,25 @@ Student2(<span class="t">int</span> n, <span class="t">string</span> nam, <span 
 
         <div class="chart-wrap">
           <svg viewBox="0 0 680 200" width="100%">
-            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">虚函数工作原理：基类指针→动态绑定</text>
+            <defs>
+              <marker id="arr4f" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">虚函数工作原理：基类指针→动态绑定</text>
 
             <rect x="240" y="40" width="200" height="32" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
             <text x="340" y="60" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">Base *p;  // 基类指针</text>
 
-            <line x1="340" y1="72" x2="340" y2="90" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+            <line x1="340" y1="72" x2="340" y2="90" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4f)"/>
 
             <rect x="100" y="96" width="480" height="16" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="0.3"/>
             <text x="100" y="108" font-size="11" fill="#dc2626" dominant-baseline="central">p->display();  // 同一个调用语句，指针指向谁就调谁的版本</text>
 
             <!-- 三种情况 -->
-            <line x1="160" y1="118" x2="100" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
-            <line x1="340" y1="118" x2="340" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
-            <line x1="520" y1="118" x2="580" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+            <line x1="160" y1="118" x2="100" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4f)"/>
+            <line x1="340" y1="118" x2="340" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4f)"/>
+            <line x1="520" y1="118" x2="580" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4f)"/>
 
             <rect x="30" y="140" width="140" height="28" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
             <text x="100" y="159" text-anchor="middle" font-size="11" fill="#1e40af" dominant-baseline="central">p=&b0 → 调Base版本</text>
