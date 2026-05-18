@@ -145,17 +145,18 @@ h2{font-size:18px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid 
       <a href="#ch6-fill" onclick="closeS()">▸ 填空题</a>
     </div>
     <a href="#programming" onclick="closeS()"><span>💻</span>编程题 <span class="qcount">6题</span></a>
+    <a href="#short-answer" onclick="closeS()"><span>📝</span>简答题 <span class="qcount">6题</span></a>
     <a href="#answer-sheet" onclick="closeS()"><span>✅</span>汇总答案</a>
   </nav>
 
   <div class="main">
 
     <h1>🧪 C++ 程序设计 · 考试题库</h1>
-    <p style="color:#6c757d;font-size:14px;margin-bottom:12px">基于课堂课件与教材 · 共 <strong id="totalQ">74</strong> 道题</p>
+    <p style="color:#6c757d;font-size:14px;margin-bottom:12px">基于课堂课件与教材 · 共 <strong id="totalQ">80</strong> 道题</p>
 
     <!-- 统计条 -->
     <div class="stats-bar">
-      <span class="stat-item">📝 总题数 <span class="num" id="totalCount">74</span></span>
+      <span class="stat-item">📝 总题数 <span class="num" id="totalCount">80</span></span>
       <span class="stat-item">✅ 已答 <span class="num" id="answeredCount">0</span></span>
       <span class="stat-item">✔️ 正确 <span class="num" id="correctCount" style="color:#16a34a">0</span></span>
       <span class="stat-item">❌ 错误 <span class="num" id="wrongCount" style="color:#ef4444">0</span></span>
@@ -1748,6 +1749,149 @@ T <span class="fn" style="color:#34d399">my_max</span>(T a, T b) {
 cout << my_max(<span class="num" style="color:#f472b6">3</span>, <span class="num" style="color:#f472b6">7</span>) << endl;          <span class="cm" style="color:#94a3b8">// int → 7</span>
 cout << my_max(<span class="num" style="color:#f472b6">45.78</span>, <span class="num" style="color:#f472b6">93.6</span>) << endl;     <span class="cm" style="color:#94a3b8">// float → 93.6</span>
 cout << my_max(<span class="str" style="color:#fbbf24">'a'</span>, <span class="str" style="color:#fbbf24">'A'</span>) << endl;       <span class="cm" style="color:#94a3b8">// char → 'a'</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 简答题 ===== -->
+    <section id="short-answer">
+      <h2>📝 简答题 <span class="q-tag q-tag-hard" style="font-size:12px;padding:2px 8px;display:inline-block;vertical-align:middle">必考重点</span></h2>
+      <p style="color:#6c757d;font-size:13px;margin-bottom:10px">每题 6 分，重点考察概念理解与知识归纳能力。</p>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S1</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>请说出 C++ 中<strong>构造函数</strong>的 5 个特点。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px">① 构造函数名与类名相同<br>
+② 没有返回值（也不写 void）<br>
+③ 可以带参数，也可以不带<br>
+④ 可以重载（一个类可以有多个构造函数）<br>
+⑤ 创建对象时系统<strong>自动调用</strong>，且只执行一次</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S2</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>什么是<strong>函数重载</strong>？重载的条件是什么？什么情况不能构成重载？</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px"><strong>定义：</strong>同一作用域内，多个函数共用同一个函数名，但参数不同。<br><br>
+<strong>重载条件（二选一即可）：</strong><br>
+① 参数个数不同<br>
+② 参数类型不同<br><br>
+<strong>不能构成重载的情况：</strong><br>
+仅返回值不同（参数相同）→ 不构成重载，因为系统无法区分调用哪个版本。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S3</span>
+          <span class="q-tag q-tag-mid">常考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>C++ 中 <strong>class</strong> 和 <strong>struct</strong> 有什么区别和联系？</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px"><strong>联系：</strong><br>
+两者在 C++ 中用法基本相同，都可以包含数据成员和成员函数。<br><br>
+<strong>区别：</strong><br>
+默认访问权限不同——class 默认是 <strong>private</strong>，struct 默认是 <strong>public</strong>。<br>
+这是两者在 C++ 中的<strong>唯一本质区别</strong>。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S4</span>
+          <span class="q-tag q-tag-mid">常考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>什么是<strong>静态数据成员</strong>？它有什么特点？如何访问？</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px"><strong>定义：</strong>用 <code>static</code> 声明的数据成员，被该类的所有对象<strong>共享</strong>，不属于某个具体对象而属于类。<br><br>
+<strong>特点：</strong><br>
+① 所有对象共享同一份静态数据<br>
+② 必须在<strong>类外定义和初始化</strong>，格式：<code>类型 类名::静态成员 = 值;</code><br>
+③ 作用域是类的作用域<br><br>
+<strong>访问方式：</strong><br>
+① <code>类名::静态成员名</code><br>
+② <code>对象名.静态成员名</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S5</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>什么是<strong>虚函数</strong>？它有什么作用？使用虚函数的步骤是什么？</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px"><strong>定义：</strong>用 <code>virtual</code> 关键字声明的成员函数。<br><br>
+<strong>作用：</strong>实现<strong>动态多态</strong>——通过基类指针或引用调用虚函数时，系统根据对象实际类型调用对应版本的函数，而不是固定调用基类版本。<br><br>
+<strong>使用步骤：</strong><br>
+① 在基类中用 <code>virtual</code> 声明函数为虚函数<br>
+② 在派生类中重定义此函数（函数名、返回值、参数必须与基类相同）<br>
+③ 用基类指针或引用指向派生类对象<br>
+④ 通过该指针或引用调用虚函数 → 动态关联</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" data-ch="sa" data-answer="简答题">
+        <div class="q-head">
+          <span class="q-num">S6</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">6分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>什么是<strong>抽象类</strong>？它有什么特点和作用？请举例说明。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考答案</button>
+            <div class="show-ans">
+<p style="font-size:13px"><strong>定义：</strong>含有纯虚函数（<code>virtual 函数类型 函数名() = 0;</code>）的类称为抽象类。<br><br>
+<strong>特点：</strong><br>
+① 抽象类<strong>不能定义对象</strong>（不能实例化）<br>
+② 可以声明指向抽象类的<strong>指针和引用</strong><br>
+③ 派生类必须实现基类的所有纯虚函数，否则派生类也是抽象类<br><br>
+<strong>作用：</strong><br>
+为整个类族提供一个<strong>统一的接口</strong>，让所有派生类遵循相同规范。<br><br>
+<strong>举例：</strong><br>
+<code>class Shape { virtual void area() = 0; };</code> 是抽象类，<br>
+<code>class Circle: public Shape { void area() { 计算圆面积 } };</code> 可实现具体功能。</p>
             </div>
           </div>
         </div>
