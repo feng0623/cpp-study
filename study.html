@@ -62,8 +62,9 @@ pre .c{color:#94a3b8;font-style:italic} pre .n{color:#f472b6}
 .exb p{margin:4px 0}
 
 /* 图解 */
-.chart-wrap{background:#f8fafc;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin:12px 0;overflow-x:auto;text-align:center}
-.chart-wrap svg{max-width:100%;height:auto}
+.chart-wrap{background:#f8fafc;border:1px solid #e0e0e0;border-radius:10px;padding:12px;margin:12px 0;overflow-x:auto;overflow-y:hidden;text-align:center;-webkit-overflow-scrolling:touch}
+.chart-wrap svg{display:block;margin:0 auto;width:100%;height:auto;min-width:480px}
+@media(max-width:550px){.chart-wrap svg{min-width:400px}}
 
 /* 表格 */
 .tw{overflow-x:auto;margin:10px 0}
