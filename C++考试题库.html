@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ 程序设计 · 考试题库</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1a1a2e;line-height:1.7;font-size:15px}
+a{color:#2563eb;text-decoration:none}
+
+/* 顶栏 */
+.top-bar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 16px;height:52px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.top-bar .logo{font-weight:700;font-size:17px;color:#2563eb}
+.top-bar .logo span{color:#1a1a2e}
+.top-bar .toggle-sidebar{display:inline-flex;background:none;border:1px solid #e0e0e0;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px;color:#333}
+
+/* 布局 */
+.container{display:flex;max-width:1200px;margin:0 auto}
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;padding:14px 8px;background:#fff;border-right:1px solid #e0e0e0}
+.sidebar h3{font-size:12px;color:#6c757d;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:6px;padding:5px 10px;font-size:13px;border-radius:6px;margin:1px 0;color:#1a1a2e;transition:.15s}
+.sidebar a:hover{background:#dbeafe;color:#2563eb}
+.sidebar a .qcount{font-size:11px;color:#6c757d;margin-left:auto}
+.sidebar a.active{background:#dbeafe;color:#2563eb;font-weight:600}
+.sidebar .ch-sub a{padding-left:26px;font-size:12px;color:#6c757d}
+@media(max-width:850px){
+  .sidebar{display:none;position:fixed;left:0;top:52px;width:270px;height:calc(100vh - 52px);z-index:99;box-shadow:4px 0 12px rgba(0,0,0,.1)}
+  .sidebar.open{display:block}
+  .main{padding:14px}
+}
+
+.main{flex:1;min-width:0;padding:20px 24px 60px}
+
+/* 统计条 */
+.stats-bar{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:14px 24px;font-size:13px}
+.stats-bar .stat-item{display:flex;align-items:center;gap:6px}
+.stats-bar .num{font-weight:700;font-size:16px;color:#2563eb}
+.stats-bar button{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-size:13px;margin-left:auto}
+.stats-bar button:hover{background:#1e40af}
+.stats-bar button.reset{background:#6b7280}
+.stats-bar button.reset:hover{background:#4b5563}
+
+h1{font-size:24px;margin-bottom:4px}
+h2{font-size:18px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #dbeafe;color:#1e40af}
+
+/* 题卡 */
+.q-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;margin:12px 0;overflow:hidden;transition:box-shadow .15s}
+.q-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q-card .q-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #f0f0f0;font-size:13px}
+.q-card .q-num{background:#2563eb;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.q-card .q-tag{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.q-tag-hard{background:#fef2f2;color:#ef4444;border:1px solid #fecaca}
+.q-tag-mid{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.q-tag-easy{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.q-card .q-score{color:#6c757d;font-size:12px}
+.q-card .q-body{padding:12px 14px}
+.q-card .q-body .q-text{font-size:14px;margin-bottom:8px;line-height:1.6}
+.q-card .q-body .q-text code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#1e40af}
+.q-card .q-body .q-options{margin:6px 0}
+.q-card .q-body .q-options label{display:block;padding:5px 10px;border-radius:6px;margin:3px 0;cursor:pointer;font-size:13px;transition:.1s;border:1px solid transparent}
+.q-card .q-body .q-options label:hover{background:#f8fafc}
+.q-card .q-body .q-options input{margin-right:6px;accent-color:#2563eb}
+.q-card .q-body .q-truefalse{display:flex;gap:16px;margin:6px 0}
+.q-card .q-body .q-truefalse label{padding:5px 18px;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;font-size:13px}
+.q-card .q-body .q-truefalse label:hover{background:#f3f4f6}
+.q-card .q-body .q-truefalse input{accent-color:#2563eb}
+
+/* 答案区 */
+.answer-area{margin-top:8px;border-top:1px dashed #e0e0e0;padding-top:8px}
+.answer-area .show-ans{background:#f8fafc;border:1px solid #e0e0e0;border-radius:6px;padding:8px 12px;font-size:13px;display:none;margin-top:6px}
+.answer-area .show-ans .ans-label{font-weight:600;color:#2563eb}
+.answer-area .show-ans .ans-explain{color:#6c757d;margin-top:2px}
+.answer-area .show-ans.correct{border-color:#22c55e;background:#f0fdf4}
+.answer-area .show-ans.wrong{border-color:#ef4444;background:#fef2f2}
+.answer-area .btn-ans{background:#f3f4f6;border:1px solid #d1d5db;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;color:#374151}
+.answer-area .btn-ans:hover{background:#e5e7eb}
+.answer-area .btn-ans.viewed{background:#dbeafe;border-color:#2563eb;color:#2563eb}
+
+/* 填空题 */
+.fill-blank input{border:none;border-bottom:2px solid #2563eb;outline:none;padding:2px 6px;font-size:14px;width:140px;background:transparent;color:#1e40af;font-family:inherit}
+.fill-blank input:focus{border-bottom-color:#1e40af}
+
+/* 编程题 */
+.code-area-bg{background:#1e293b;border-radius:8px;padding:12px 14px;overflow-x:auto;margin:6px 0;color:#e2e8f0;font-size:13px;font-family:"SFMono-Regular","Fira Code","Consolas",monospace;line-height:1.5}
+.code-area-bg .kw{color:#c084fc}
+.code-area-bg .type{color:#60a5fa}
+.code-area-bg .fn{color:#34d399}
+.code-area-bg .str{color:#fbbf24}
+.code-area-bg .cm{color:#94a3b8;font-style:italic}
+.code-area-bg .num{color:#f472b6}
+
+/* 返回顶部 */
+.back-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;align-items:center;justify-content:center;z-index:50}
+.back-top.show{display:flex}
+
+/* 响应式提示 */
+.resp-tip{text-align:center;color:#6c757d;font-size:13px;padding:20px 0}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="toggle-sidebar" onclick="toggleSidebar()">☰ 章节</button>
+  <div class="logo">C++<span>题库</span></div>
+</div>
+
+<div class="container">
+  <nav class="sidebar" id="sidebar">
+    <h3>章节导航</h3>
+    <a href="#ch1" onclick="closeS()" class="active"><span>📘</span>第一章 C++初步知识 <span class="qcount">13题</span></a>
+    <div class="ch-sub">
+      <a href="#ch1-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch1-judge" onclick="closeS()">▸ 判断题</a>
+      <a href="#ch1-fill" onclick="closeS()">▸ 填空题</a>
+    </div>
+    <a href="#ch2" onclick="closeS()"><span>📗</span>第二章 类和对象 <span class="qcount">13题</span></a>
+    <div class="ch-sub">
+      <a href="#ch2-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch2-judge" onclick="closeS()">▸ 判断题</a>
+      <a href="#ch2-fill" onclick="closeS()">▸ 填空题</a>
+    </div>
+    <a href="#ch3" onclick="closeS()"><span>📙</span>第三章 构造函数与析构 <span class="qcount">12题</span></a>
+    <div class="ch-sub">
+      <a href="#ch3-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch3-judge" onclick="closeS()">▸ 判断题</a>
+      <a href="#ch3-fill" onclick="closeS()">▸ 填空题</a>
+    </div>
+    <a href="#ch4" onclick="closeS()"><span>📕</span>第四章 运算符重载 <span class="qcount">8题</span></a>
+    <div class="ch-sub">
+      <a href="#ch4-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch4-judge" onclick="closeS()">▸ 判断题</a>
+    </div>
+    <a href="#ch5" onclick="closeS()"><span>📘</span>第五章 继承与派生 <span class="qcount">12题</span></a>
+    <div class="ch-sub">
+      <a href="#ch5-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch5-judge" onclick="closeS()">▸ 判断题</a>
+      <a href="#ch5-fill" onclick="closeS()">▸ 填空题</a>
+    </div>
+    <a href="#ch6" onclick="closeS()"><span>📗</span>第六章 多态与虚函数 <span class="qcount">10题</span></a>
+    <div class="ch-sub">
+      <a href="#ch6-sel" onclick="closeS()">▸ 选择题</a>
+      <a href="#ch6-judge" onclick="closeS()">▸ 判断题</a>
+      <a href="#ch6-fill" onclick="closeS()">▸ 填空题</a>
+    </div>
+    <a href="#programming" onclick="closeS()"><span>💻</span>编程题 <span class="qcount">6题</span></a>
+    <a href="#answer-sheet" onclick="closeS()"><span>✅</span>汇总答案</a>
+  </nav>
+
+  <div class="main">
+
+    <h1>🧪 C++ 程序设计 · 考试题库</h1>
+    <p style="color:#6c757d;font-size:14px;margin-bottom:12px">基于课堂课件与教材 · 共 <strong id="totalQ">74</strong> 道题</p>
+
+    <!-- 统计条 -->
+    <div class="stats-bar">
+      <span class="stat-item">📝 总题数 <span class="num" id="totalCount">74</span></span>
+      <span class="stat-item">✅ 已答 <span class="num" id="answeredCount">0</span></span>
+      <span class="stat-item">✔️ 正确 <span class="num" id="correctCount" style="color:#16a34a">0</span></span>
+      <span class="stat-item">❌ 错误 <span class="num" id="wrongCount" style="color:#ef4444">0</span></span>
+      <button onclick="checkAll()">📋 显示全部答案</button>
+      <button class="reset" onclick="resetAll()">🔄 重置</button>
+    </div>
+
+    <!-- ===== 第一章 ===== -->
+    <section id="ch1">
+      <h2>📘 第一章 C++ 初步知识</h2>
+
+      <div id="ch1-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q1 -->
+      <div class="q-card" data-ch="1" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">1</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在 C++ 中，有关 <code>cin</code> 和 <code>cout</code> 的叙述正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q1" value="A"> A. 使用 cin 和 cout 不需要包含头文件</label>
+            <label><input type="radio" name="q1" value="B"> B. 使用 cin 和 cout 需包含 <code>#include &lt;iostream&gt;</code> 和 <code>using namespace std;</code></label>
+            <label><input type="radio" name="q1" value="C"> C. cin 只能输入整数</label>
+            <label><input type="radio" name="q1" value="D"> D. cout 只能输出字符串</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">cin/cout 在 iostream 头文件中声明，使用标准库需 using namespace std。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-card" data-ch="1" data-type="choice" data-answer="A">
+        <div class="q-head">
+          <span class="q-num">2</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">函数重载要求以下哪项不同？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q2" value="A"> A. 参数个数或参数类型</label>
+            <label><input type="radio" name="q2" value="B"> B. 函数返回值类型</label>
+            <label><input type="radio" name="q2" value="C"> C. 函数名</label>
+            <label><input type="radio" name="q2" value="D"> D. 函数体</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：A</span><br><span class="ans-explain">重载允许函数同名但参数个数或类型不同。仅返回值不同不允许，系统无法区分。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-card" data-ch="1" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">3</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">下列关于引用的说法，错误的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q3" value="A"> A. 引用是变量的别名</label>
+            <label><input type="radio" name="q3" value="B"> B. 定义引用时必须初始化</label>
+            <label><input type="radio" name="q3" value="C"> C. 可以建立引用的数组</label>
+            <label><input type="radio" name="q3" value="D"> D. 引用可用于函数参数，实现双向传递</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">不能建立引用的数组，数组是一组连续空间，引用是别名不占据独立空间。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-card" data-ch="1" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">4</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">关于函数模板，以下说法正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q4" value="A"> A. 函数模板可以替代所有函数重载</label>
+            <label><input type="radio" name="q4" value="B"> B. 函数模板中的虚拟类型必须用 class 关键字声明</label>
+            <label><input type="radio" name="q4" value="C"> C. 函数模板的实参类型不能自动推导</label>
+            <label><input type="radio" name="q4" value="D"> D. 函数模板适用于参数个数相同、函数体相同、仅数据类型不同的情况</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：D</span><br><span class="ans-explain">参数个数不同不能用模板。模板声明可用 typename 或 class 关键字，实参类型可自动推导。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch1-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q5 -->
+      <div class="q-card" data-ch="1" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">5</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><code>using namespace std;</code> 的作用是使用命名空间 std，标准库中的类和函数是在 std 中声明的。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q5" value="正确"> 正确</label>
+            <label><input type="radio" name="q5" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-card" data-ch="1" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">6</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">函数重载允许两个函数的函数名、参数个数、参数类型完全相同，仅返回值不同。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q6" value="正确"> 正确</label>
+            <label><input type="radio" name="q6" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">不允许参数个数、参数类型都相同，仅返回值不同。系统从调用形式上无法判断匹配哪个函数。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-card" data-ch="1" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">7</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">有默认参数的函数的形参必须放在形参表的最右边。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q7" value="正确"> 正确</label>
+            <label><input type="radio" name="q7" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">有默认值的形参必须放在形参表右侧，不允许无默认值和有默认值交错排列。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-card" data-ch="1" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">8</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在 C++ 中，<code>const float PI = 3.14159;</code> 是用 const 定义的常变量，比 <code>#define</code> 更安全（有类型检查）。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q8" value="正确"> 正确</label>
+            <label><input type="radio" name="q8" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch1-fill"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">三、填空题</h3></div>
+
+      <!-- Q9 -->
+      <div class="q-card" data-ch="1" data-type="fill" data-answer="iostream">
+        <div class="q-head">
+          <span class="q-num">9</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在 C++ 中，使用 cout 和 cin 时需要包含头文件 ______。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：&lt;iostream&gt;</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-card" data-ch="1" data-type="fill" data-answer="endl">
+        <div class="q-head">
+          <span class="q-num">10</span>
+          <span class="q-tag q-tag-low">基础了解</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">C++ 中代表换行的运算符是 ______，也可以用 <code>"\n"</code> 代替。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：endl</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="q-card" data-ch="1" data-type="fill" data-answer="int">
+        <div class="q-head">
+          <span class="q-num">11</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">C++ 标准规定 <code>main</code> 函数的类型必须是 ______ 类型。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：int</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="q-card" data-ch="1" data-type="fill" data-answer="引用">
+        <div class="q-head">
+          <span class="q-num">12</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">C++ 为变量取别名的功能称为变量的 ______ ，格式为 <code>类型 &别名 = 变量名</code>。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：引用</span></div>
+          </div>
+        </div>
+
+        <!-- Q13 新增 -->
+        <div class="q-card" data-ch="1" data-type="fill" data-answer="函数原型">
+          <div class="q-head">
+            <span class="q-num">13</span>
+            <span class="q-tag q-tag-mid">常考掌握</span>
+            <span class="q-score">1分</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">C++ 规定，如果函数调用在函数定义之前，需要在调用前进行 ______ 声明。</div>
+            <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+            <div class="answer-area">
+              <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+              <div class="show-ans"><span class="ans-label">✅ 答案：函数原型</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第二章 ===== -->
+    <section id="ch2">
+      <h2>📗 第二章 类和对象</h2>
+      <p style="font-size:13px;color:#6c757d;margin-bottom:8px">（原Q13-Q24编号不变，以下Q14为新编号）</p>
+
+      <div id="ch2-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q13 -->
+      <div class="q-card" data-ch="2" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">13</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在 C++ 中，类定义默认的访问权限是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q13" value="A"> A. public</label>
+            <label><input type="radio" name="q13" value="B"> B. private</label>
+            <label><input type="radio" name="q13" value="C"> C. protected</label>
+            <label><input type="radio" name="q13" value="D"> D. 无默认访问权限</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">class 默认是 private，与 struct 默认 public 不同。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="q-card" data-ch="2" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">14</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">下列有关类和对象的说法正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q14" value="A"> A. 类是实例，对象是类型</label>
+            <label><input type="radio" name="q14" value="B"> B. 类会占用内存空间，对象不占用</label>
+            <label><input type="radio" name="q14" value="C"> C. 对象是类的抽象</label>
+            <label><input type="radio" name="q14" value="D"> D. 类是对象的抽象，对象是类的具体实例</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：D</span><br><span class="ans-explain">类是抽象的（不占内存），对象是具体的（占内存）。类是模板，对象是实例。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="q-card" data-ch="2" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">15</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在类外定义成员函数时，需要使用作用域运算符，格式为？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q15" value="A"> A. 函数名::类名</label>
+            <label><input type="radio" name="q15" value="B"> B. 类名.函数名</label>
+            <label><input type="radio" name="q15" value="C"> C. 类名::函数名</label>
+            <label><input type="radio" name="q15" value="D"> D. 函数名.类名</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">格式：类型 类名::函数名(参数表) { }。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="q-card" data-ch="2" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">16</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">访问对象成员的方式不包括以下哪种？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q16" value="A"> A. 对象名.成员名</label>
+            <label><input type="radio" name="q16" value="B"> B. 类名::成员名</label>
+            <label><input type="radio" name="q16" value="C"> C. 指针->成员名</label>
+            <label><input type="radio" name="q16" value="D"> D. 引用.成员名</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">三种访问方式：对象名.成员名、指针->成员名、对象的引用.成员名。类名::成员名用于访问静态成员。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch2-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q17 -->
+      <div class="q-card" data-ch="2" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">17</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">同一个类的所有对象共享同一个成员函数空间，系统只为每个对象的数据成员分配内存。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q17" value="正确"> 正确</label>
+            <label><input type="radio" name="q17" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q18 -->
+      <div class="q-card" data-ch="2" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">18</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在类定义中可以给数据成员赋初值，如 <code>int x = 5;</code> 是允许的。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q18" value="正确"> 正确</label>
+            <label><input type="radio" name="q18" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">类只是定义一种结构（样板），不分配存储空间，因此不能对数据成员初始化。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch2-fill"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">三、填空题</h3></div>
+
+      <!-- Q19 -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="封装">
+        <div class="q-head">
+          <span class="q-num">19</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">面向对象程序设计四大特征是：抽象、______、继承、多态。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：封装</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="分号">
+        <div class="q-head">
+          <span class="q-num">20</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">类定义结束时，末尾的 ______（标点符号）不能忘记。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：分号（;）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q21 -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="public">
+        <div class="q-head">
+          <span class="q-num">21</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">结构体 struct 默认访问权限是 ______（填 public 或 private）。</div>
+          <div class="fill-blank"><input type="text" placeholder="public/private" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：public</span><br><span class="ans-explain">struct 默认 public，class 默认 private。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="消息">
+        <div class="q-head">
+          <span class="q-num">22</span>
+          <span class="q-tag q-tag-low">基础了解</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">调用对象中的函数就是向对象传递一个 ______，要求对象执行某个操作。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：消息</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="inline">
+        <div class="q-head">
+          <span class="q-num">23</span>
+          <span class="q-tag q-tag-low">基础了解</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在类内定义的成员函数默认是 ______ 函数。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：inline（内置/内联）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q24（多了一个2分填空） -->
+      <div class="q-card" data-ch="2" data-type="fill" data-answer="protected">
+        <div class="q-head">
+          <span class="q-num">24</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">类的成员访问权限中，______ 权限表示成员可在本类和派生类中访问，但不能在类外访问。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：protected（保护）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q25（原Q24后新增） -->
+      <div class="q-card" data-ch="2" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">25</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在 C++ 中，struct 和 class 的默认访问权限都是 private。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q25" value="正确"> 正确</label>
+            <label><input type="radio" name="q25" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">struct 默认 public，class 默认 private。这是两者在 C++ 中唯一的本质区别。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第三章 ===== -->
+    <section id="ch3">
+      <h2>📙 第三章 关于类和对象的进一步讨论</h2>
+      <p style="font-size:13px;color:#6c757d;margin-bottom:8px">（原Q25-Q36编号不变，以下Q26为新编号）</p>
+
+      <div id="ch3-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q25 -->
+      <div class="q-card" data-ch="3" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">25</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">关于构造函数，下列说法错误的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q25" value="A"> A. 构造函数名与类名相同</label>
+            <label><input type="radio" name="q25" value="B"> B. 构造函数可以返回值</label>
+            <label><input type="radio" name="q25" value="C"> C. 构造函数可以重载</label>
+            <label><input type="radio" name="q25" value="D"> D. 构造函数在创建对象时自动调用</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">构造函数没有返回值，也不需要写 void。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="q-card" data-ch="3" data-type="choice" data-answer="A">
+        <div class="q-head">
+          <span class="q-num">26</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">析构函数的特点是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q26" value="A"> A. 没有参数、没有返回值、不能重载</label>
+            <label><input type="radio" name="q26" value="B"> B. 有参数、没有返回值</label>
+            <label><input type="radio" name="q26" value="C"> C. 可以重载、不能有参数</label>
+            <label><input type="radio" name="q26" value="D"> D. 可以有多个析构函数</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：A</span><br><span class="ans-explain">析构函数名为 ~类名，无返回值、无形参、不能重载，一个类只有一个析构函数。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q27 -->
+      <div class="q-card" data-ch="3" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">27</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">下列有关构造和析构函数调用顺序的说法正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q27" value="A"> A. 先构造的先析构</label>
+            <label><input type="radio" name="q27" value="B"> B. 构造和析构没有固定顺序</label>
+            <label><input type="radio" name="q27" value="C"> C. 先构造的后析构，后构造的先析构</label>
+            <label><input type="radio" name="q27" value="D"> D. 析构函数在构造函数之前调用</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">类似栈结构：后进先出。先构造的对象后析构，后构造的对象先析构。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q28 -->
+      <div class="q-card" data-ch="3" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">28</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">关于静态数据成员，以下说法正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q28" value="A"> A. 每个对象都有自己的静态数据成员副本</label>
+            <label><input type="radio" name="q28" value="B"> B. 静态数据成员在类内定义和初始化</label>
+            <label><input type="radio" name="q28" value="C"> C. 静态数据成员属于整个类，被所有对象共享</label>
+            <label><input type="radio" name="q28" value="D"> D. 静态数据成员不能用类名访问</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">静态成员被所有对象共享，必须在类外定义和初始化，可以用 类名::静态成员名 访问。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch3-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q29 -->
+      <div class="q-card" data-ch="3" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">29</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">如果用户没有定义构造函数，C++ 系统会自动生成一个空函数体的默认构造函数。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q29" value="正确"> 正确</label>
+            <label><input type="radio" name="q29" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q30 -->
+      <div class="q-card" data-ch="3" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">30</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">一个类的多个构造函数中，创建对象时可以选择多个构造函数同时执行。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q30" value="正确"> 正确</label>
+            <label><input type="radio" name="q30" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">一个类可以有多个构造函数，但创建对象时系统仅执行其中一个。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q31 -->
+      <div class="q-card" data-ch="3" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">31</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">友元关系可以传递。如果 A 是 B 的友元，B 是 C 的友元，则 A 也是 C 的友元。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q31" value="正确"> 正确</label>
+            <label><input type="radio" name="q31" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">友元关系是单向的，不能传递。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q32 -->
+      <div class="q-card" data-ch="3" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">32</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">静态成员函数不能直接访问非静态数据成员。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q32" value="正确"> 正确</label>
+            <label><input type="radio" name="q32" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">静态成员函数属于类，与具体对象无关，因此不能直接访问非静态成员（非静态成员属于具体对象）。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch3-fill"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">三、填空题</h3></div>
+
+      <!-- Q33 -->
+      <div class="q-card" data-ch="3" data-type="fill" data-answer="类名">
+        <div class="q-head">
+          <span class="q-num">33</span>
+          <span class="q-tag q-tag-hard">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">构造函数的名称必须与 ______ 相同。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：类名</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q34 -->
+      <div class="q-card" data-ch="3" data-type="fill" data-answer="~">
+        <div class="q-head">
+          <span class="q-num">34</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">析构函数名在类名前加 ______ 符号。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：~（波浪号）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q35 -->
+      <div class="q-card" data-ch="3" data-type="fill" data-answer="类模板">
+        <div class="q-head">
+          <span class="q-num">35</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">对于功能相同但数据类型不同的类，可以定义 ______ 来避免重复代码。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：类模板</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q36 -->
+      <div class="q-card" data-ch="3" data-type="fill" data-answer="friend">
+        <div class="q-head">
+          <span class="q-num">36</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">C++ 中用关键字 ______ 声明友元函数或友元类。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：friend</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第四章 ===== -->
+    <section id="ch4">
+      <h2>📕 第四章 运算符重载</h2>
+
+      <div id="ch4-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q37 -->
+      <div class="q-card" data-ch="4" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">37</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">下列运算符中，不能重载的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q37" value="A"> A. +</label>
+            <label><input type="radio" name="q37" value="B"> B. ++</label>
+            <label><input type="radio" name="q37" value="C"> C. &</label>
+            <label><input type="radio" name="q37" value="D"> D. ::</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：D</span><br><span class="ans-explain">不能重载的 5 个运算符：.  .*  ::  sizeof  ?:</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q38 -->
+      <div class="q-card" data-ch="4" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">38</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">要将 <code>cout << 对象</code> 用于自定义类，应重载哪个运算符？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q38" value="A"> A. 重载为成员函数形式</label>
+            <label><input type="radio" name="q38" value="B"> B. 重载为普通函数形式</label>
+            <label><input type="radio" name="q38" value="C"> C. 重载为友元函数形式</label>
+            <label><input type="radio" name="q38" value="D"> D. 不能重载</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">流插入运算符 << 和流提取运算符 >> 只能重载为友元函数，因为第一个形参必须是 ostream& 或 istream&，不是自定义类型。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q39 -->
+      <div class="q-card" data-ch="4" data-type="choice" data-answer="A">
+        <div class="q-head">
+          <span class="q-num">39</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">运算符重载不能改变的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q39" value="A"> A. 运算符的优先级和结合性</label>
+            <label><input type="radio" name="q39" value="B"> B. 运算符的语义</label>
+            <label><input type="radio" name="q39" value="C"> C. 运算符的名称</label>
+            <label><input type="radio" name="q39" value="D"> D. 运算符的应用范围</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：A</span><br><span class="ans-explain">重载不改变优先级和结合性、不改变操作数个数。不能臆造新运算符。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch4-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q40 -->
+      <div class="q-card" data-ch="4" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">40</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">重载运算符可以改变操作数的个数。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q40" value="正确"> 正确</label>
+            <label><input type="radio" name="q40" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">重载不能改变操作数的个数，例如 + 永远是双目运算符。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q41 -->
+      <div class="q-card" data-ch="4" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">41</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">重载为友元函数时，参数个数等于原操作数个数。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q41" value="正确"> 正确</label>
+            <label><input type="radio" name="q41" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">重载为成员函数时参数个数 = 原操作数个数 - 1（少一个当前对象）。友元函数参数个数 = 原操作数个数。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q42 -->
+      <div class="q-card" data-ch="4" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">42</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">运算符重载函数可以带默认值参数。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q42" value="正确"> 正确</label>
+            <label><input type="radio" name="q42" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">运算符重载函数不能带默认值参数。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q43 -->
+      <div class="q-card" data-ch="4" data-type="fill" data-answer="operator">
+        <div class="q-head">
+          <span class="q-num">43</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">运算符重载函数名由关键字 ______ 和运算符联合组成。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：operator</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q44 -->
+      <div class="q-card" data-ch="4" data-type="fill" data-answer="int">
+        <div class="q-head">
+          <span class="q-num">44</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">后置自增运算符 <code>++</code> 重载时函数参数类型为 ______（占位参数，仅用于区分）。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：int</span><br><span class="ans-explain">后置++ 的形参写 int（不传值），仅用于和前置++区分。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第五章 ===== -->
+    <section id="ch5">
+      <h2>📘 第五章 继承与派生</h2>
+
+      <div id="ch5-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q45 -->
+      <div class="q-card" data-ch="5" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">45</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类构造函数的执行顺序是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q45" value="A"> A. 派生类构造函数 → 子对象构造函数 → 基类构造函数</label>
+            <label><input type="radio" name="q45" value="B"> B. 子对象构造函数 → 基类构造函数 → 派生类构造函数</label>
+            <label><input type="radio" name="q45" value="C"> C. 基类构造函数 → 子对象构造函数 → 派生类构造函数</label>
+            <label><input type="radio" name="q45" value="D"> D. 派生类构造函数 → 基类构造函数 → 子对象构造函数</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">派生类构造函数执行顺序：①基类构造函数 ②子对象构造函数 ③派生类构造函数体。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q46 -->
+      <div class="q-card" data-ch="5" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">46</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">多重继承中，派生类构造函数的调用顺序取决于？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q46" value="A"> A. 参数表的顺序</label>
+            <label><input type="radio" name="q46" value="B"> B. 声明派生类时基类的先后顺序</label>
+            <label><input type="radio" name="q46" value="C"> C. 基类名称的字母顺序</label>
+            <label><input type="radio" name="q46" value="D"> D. 主函数中定义的顺序</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">系统调用基类构造函数的顺序就是声明派生类时基类的出现顺序。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q47 -->
+      <div class="q-card" data-ch="5" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">47</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">解决菱形继承（A->B, A->C, B,C->D）二义性的方法是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q47" value="A"> A. 使用同名覆盖</label>
+            <label><input type="radio" name="q47" value="B"> B. 使用作用域限定</label>
+            <label><input type="radio" name="q47" value="C"> C. 使用虚函数</label>
+            <label><input type="radio" name="q47" value="D"> D. 使用虚基类</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：D</span><br><span class="ans-explain">菱形继承中基类被继承多次，用虚基类（virtual）使派生类只保留一份共同基类成员。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch5-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q48 -->
+      <div class="q-card" data-ch="5" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">48</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类对象可以赋值给基类对象，但反之不行。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q48" value="正确"> 正确</label>
+            <label><input type="radio" name="q48" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">基类对象不具有派生类的所有成员，所以基类不能赋值给派生类。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q49 -->
+      <div class="q-card" data-ch="5" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">49</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类的析构函数执行顺序与构造函数相反：先执行派生类析构，再调用子对象析构，最后调用基类析构。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q49" value="正确"> 正确</label>
+            <label><input type="radio" name="q49" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q50 -->
+      <div class="q-card" data-ch="5" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">50</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类可以通过基类指针访问基类的成员，但不能访问派生类新增的成员。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q50" value="正确"> 正确</label>
+            <label><input type="radio" name="q50" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">通过基类指针只能使用从基类继承的成员，无法访问派生类新增的成员。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch5-fill"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">三、填空题</h3></div>
+
+      <!-- Q51 -->
+      <div class="q-card" data-ch="5" data-type="fill" data-answer="直接基类">
+        <div class="q-head">
+          <span class="q-num">51</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">多层派生写构造函数时，只须调用其 ______ 的构造函数即可。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：直接基类</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q52 -->
+      <div class="q-card" data-ch="5" data-type="fill" data-answer="virtual">
+        <div class="q-head">
+          <span class="q-num">52</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">声明虚基类的关键字是 ______。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：virtual</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q53 -->
+      <div class="q-card" data-ch="5" data-type="fill" data-answer="派生类不能继承基类的构造函数">
+        <div class="q-head">
+          <span class="q-num">53</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类不能继承基类的构造函数、析构函数和______。（填一种不能继承的东西）</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：友元函数（或重载的=运算符、赋值运算符函数等）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q54 -->
+      <div class="q-card" data-ch="5" data-type="fill" data-answer="派生类">
+        <div class="q-head">
+          <span class="q-num">54</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">在多重继承中，最终的 ______（填"基类"或"派生类"）负责对虚基类进行初始化。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：派生类</span><br><span class="ans-explain">最终派生类不仅要负责对其直接基类初始化，还要负责对虚基类初始化。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q55 新增：派生类构造函数特殊情况 -->
+      <div class="q-card" data-ch="5" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">55</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">派生类构造函数中，必须写出基类构造函数及其参数，无论基类是否定义了带参构造函数。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q55" value="正确"> 正确</label>
+            <label><input type="radio" name="q55" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">如果基类没有定义构造函数，或定义了无参构造函数，派生类可以不写基类构造函数，系统自动调默认构造函数。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q56 新增：继承 vs 组合 -->
+      <div class="q-card" data-ch="5" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">56</span>
+          <span class="q-tag q-tag-low">基础了解</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">继承是"is-a"关系（学生是一种人），组合是"has-a"关系（班级里有学生）。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q56" value="正确"> 正确</label>
+            <label><input type="radio" name="q56" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第六章 ===== -->
+    <section id="ch6">
+      <h2>📗 第六章 多态性与虚函数</h2>
+      <p style="font-size:13px;color:#6c757d;margin-bottom:8px">（原Q55-Q64编号不变，以下Q57为新编号）</p>
+
+      <div id="ch6-sel"><h3 style="font-size:15px;color:#2563eb;margin:8px 0">一、选择题</h3></div>
+
+      <!-- Q57 -->
+      <div class="q-card" data-ch="6" data-type="choice" data-answer="C">
+        <div class="q-head">
+          <span class="q-num">57</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">以下哪种方式实现的是动态多态性？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q55" value="A"> A. 函数重载</label>
+            <label><input type="radio" name="q55" value="B"> B. 运算符重载</label>
+            <label><input type="radio" name="q55" value="C"> C. 虚函数</label>
+            <label><input type="radio" name="q55" value="D"> D. 函数模板</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：C</span><br><span class="ans-explain">静态多态通过函数重载和运算符重载实现（编译时确定）；动态多态通过虚函数实现（运行时确定）。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q58 -->
+      <div class="q-card" data-ch="6" data-type="choice" data-answer="D">
+        <div class="q-head">
+          <span class="q-num">58</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">以下关于虚函数的说法正确的是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q58" value="A"> A. 构造函数可以声明为虚函数</label>
+            <label><input type="radio" name="q58" value="B"> B. 普通函数（非成员函数）可以声明为虚函数</label>
+            <label><input type="radio" name="q58" value="C"> C. 虚函数在派生类中必须重新定义</label>
+            <label><input type="radio" name="q58" value="D"> D. 用基类指针调用虚函数时，系统根据对象实际类型调用相应函数</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：D</span><br><span class="ans-explain">构造函数不能是虚函数。只有成员函数能声明为虚函数。虚函数在派生类中不强制重新定义。D 描述的是虚函数的核心功能——动态关联。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q59 -->
+      <div class="q-card" data-ch="6" data-type="choice" data-answer="B">
+        <div class="q-head">
+          <span class="q-num">59</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">2分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">有虚函数的对象比无虚函数的对象占用更多空间，原因是？</div>
+          <div class="q-options">
+            <label><input type="radio" name="q59" value="A"> A. 虚函数代码更长</label>
+            <label><input type="radio" name="q59" value="B"> B. 编译系统在对象中增加了一个指向虚函数表的指针 VPTR</label>
+            <label><input type="radio" name="q59" value="C"> C. 虚函数有返回值</label>
+            <label><input type="radio" name="q59" value="D"> D. 虚函数有默认参数</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：B</span><br><span class="ans-explain">编译系统在带虚函数的类中增加一个 VPTR 指针（指向函数指针表），因此对象占用的内存增大。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch6-judge"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">二、判断题</h3></div>
+
+      <!-- Q60 -->
+      <div class="q-card" data-ch="6" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">60</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">当基类指针指向派生类对象时，通过该指针调用虚函数会调用派生类的版本。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q60" value="正确"> 正确</label>
+            <label><input type="radio" name="q60" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">这就是虚函数的核心功能——动态关联。实际调用哪个函数在运行时根据对象的实际类型确定。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q61 -->
+      <div class="q-card" data-ch="6" data-type="judge" data-answer="正确">
+        <div class="q-head">
+          <span class="q-num">61</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">抽象类不能定义对象，但可以声明指向抽象类的指针和引用。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q61" value="正确"> 正确</label>
+            <label><input type="radio" name="q61" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：正确</span><br><span class="ans-explain">抽象类不能实例化，但可以声明指针和引用，指向派生类对象，实现多态。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q62 -->
+      <div class="q-card" data-ch="6" data-type="judge" data-answer="错误">
+        <div class="q-head">
+          <span class="q-num">62</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">纯虚函数与函数体为空的虚函数是一样的。</div>
+          <div class="q-truefalse">
+            <label><input type="radio" name="q62" value="正确"> 正确</label>
+            <label><input type="radio" name="q62" value="错误"> 错误</label>
+          </div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：错误</span><br><span class="ans-explain">纯虚函数根本没有函数体，所在的类不能实例化（抽象类）。空的虚函数有函数体，所在类可以实例化。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ch6-fill"><h3 style="font-size:15px;color:#2563eb;margin:12px 0 8px">三、填空题</h3></div>
+
+      <!-- Q63 -->
+      <div class="q-card" data-ch="6" data-type="fill" data-answer="virtual">
+        <div class="q-head">
+          <span class="q-num">63</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">声明虚函数的关键字是 ______。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：virtual</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q64 -->
+      <div class="q-card" data-ch="6" data-type="fill" data-answer="0">
+        <div class="q-head">
+          <span class="q-num">64</span>
+          <span class="q-tag q-tag-high">必考重点</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">纯虚函数的声明格式为：<code>virtual 函数类型 函数名(参数表)=______;</code></div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q65 -->
+      <div class="q-card" data-ch="6" data-type="fill" data-answer="抽象类">
+        <div class="q-head">
+          <span class="q-num">65</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">带有纯虚函数的类称为 ______。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：抽象类</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q66 -->
+      <div class="q-card" data-ch="6" data-type="fill" data-answer="析构函数">
+        <div class="q-head">
+          <span class="q-num">66</span>
+          <span class="q-tag q-tag-mid">常考掌握</span>
+          <span class="q-score">1分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text">构造函数不能声明为虚函数，但 ______ 可以声明为虚函数。</div>
+          <div class="fill-blank"><input type="text" placeholder="填写答案" oninput="fillInput(this)"></div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)">查看答案</button>
+            <div class="show-ans"><span class="ans-label">✅ 答案：析构函数（虚析构函数）</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 编程题 ===== -->
+    <section id="programming">
+      <h2>💻 编程题 <span class="q-tag q-tag-hard" style="font-size:12px;padding:2px 8px;display:inline-block;vertical-align:middle">必考重点</span></h2>
+      <p style="color:#6c757d;font-size:13px;margin-bottom:10px">每题 10 分，重点考察综合运用能力。</p>
+
+      <!-- P1 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P1</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>定义一个 <code>Box</code> 类，包含长、宽、高私有成员，设计带参数的构造函数（使用初始化表），以及计算体积的成员函数。主函数创建两个长方体对象（12,25,30）和（15,30,21），输出它们的体积。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="cm" style="color:#94a3b8">// 参考代码</span>
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Box</span> {
+<span class="kw" style="color:#c084fc">public:</span>
+    Box(<span class="type" style="color:#60a5fa">int</span> h, <span class="type" style="color:#60a5fa">int</span> w, <span class="type" style="color:#60a5fa">int</span> len): <span class="cm" style="color:#94a3b8">// 初始化表</span>
+        height(h), width(w), length(len) {}
+    <span class="type" style="color:#60a5fa">int</span> <span class="fn" style="color:#34d399">volume</span>() { <span class="kw" style="color:#c084fc">return</span> height * width * length; }
+<span class="kw" style="color:#c084fc">private:</span>
+    <span class="type" style="color:#60a5fa">int</span> height, width, length;
+};
+<span class="type" style="color:#60a5fa">int</span> <span class="fn" style="color:#34d399">main</span>() {
+    Box box1(<span class="num" style="color:#f472b6">12</span>, <span class="num" style="color:#f472b6">25</span>, <span class="num" style="color:#f472b6">30</span>);
+    Box box2(<span class="num" style="color:#f472b6">15</span>, <span class="num" style="color:#f472b6">30</span>, <span class="num" style="color:#f472b6">21</span>);
+    <span class="kw" style="color:#c084fc">cout</span> << <span class="str" style="color:#fbbf24">"box1体积="</span> << box1.volume() << <span class="kw" style="color:#c084fc">endl</span>;
+    <span class="kw" style="color:#c084fc">cout</span> << <span class="str" style="color:#fbbf24">"box2体积="</span> << box2.volume() << <span class="kw" style="color:#c084fc">endl</span>;
+    <span class="kw" style="color:#c084fc">return</span> <span class="num" style="color:#f472b6">0</span>;
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P2 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P2</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>定义复数类 <code>Complex</code>（私有数据成员 real, imag），重载 + 运算符实现复数加法（使用友元函数形式），重载 << 运算符实现复数输出。主函数中创建 c1(3,4)、c2(5,-10)，计算 c3 = c1 + c2 并输出。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="cm" style="color:#94a3b8">// 参考代码</span>
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Complex</span> {
+    <span class="kw" style="color:#c084fc">friend</span> Complex <span class="kw" style="color:#c084fc">operator</span>+(Complex &c1, Complex &c2);
+    <span class="kw" style="color:#c084fc">friend</span> ostream& <span class="kw" style="color:#c084fc">operator</span><<(ostream &out, Complex &c);
+<span class="kw" style="color:#c084fc">public:</span>
+    Complex(<span class="type" style="color:#60a5fa">double</span> r = <span class="num" style="color:#f472b6">0</span>, <span class="type" style="color:#60a5fa">double</span> i = <span class="num" style="color:#f472b6">0</span>): real(r), imag(i) {}
+<span class="kw" style="color:#c084fc">private:</span>
+    <span class="type" style="color:#60a5fa">double</span> real, imag;
+};
+Complex <span class="kw" style="color:#c084fc">operator</span>+(Complex &c1, Complex &c2) {
+    <span class="kw" style="color:#c084fc">return</span> Complex(c1.real + c2.real, c1.imag + c2.imag);
+}
+ostream& <span class="kw" style="color:#c084fc">operator</span><<(ostream &out, Complex &c) {
+    out << <span class="str" style="color:#fbbf24">"("</span> << c.real << <span class="str" style="color:#fbbf24">","</span> << c.imag << <span class="str" style="color:#fbbf24">"i)"</span>;
+    <span class="kw" style="color:#c084fc">return</span> out;
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P3 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P3</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>声明基类 <code>Student</code>（学号、姓名），派生类 <code>Student1</code>（增加年龄），<code>Student2</code>（再增加成绩）。写出多层派生时各构造函数的写法。主函数创建 Student2 对象 stud(10010,"李明",17,89) 并输出全部数据。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Student</span> {
+<span class="kw" style="color:#c084fc">protected:</span>
+    <span class="type" style="color:#60a5fa">int</span> num; <span class="type" style="color:#60a5fa">string</span> name;
+<span class="kw" style="color:#c084fc">public:</span>
+    Student(<span class="type" style="color:#60a5fa">int</span> n, <span class="type" style="color:#60a5fa">string</span> nam): num(n), name(nam) {}
+    <span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">display</span>() { cout<<<span class="str" style="color:#fbbf24">"num:"</span><<num<<<span class="str" style="color:#fbbf24">" name:"</span><<name<<endl; }
+};
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Student1</span>: <span class="kw" style="color:#c084fc">public</span> <span class="type" style="color:#60a5fa">Student</span> {
+<span class="kw" style="color:#c084fc">protected:</span> <span class="type" style="color:#60a5fa">int</span> age;
+<span class="kw" style="color:#c084fc">public:</span>
+    Student1(<span class="type" style="color:#60a5fa">int</span> n, <span class="type" style="color:#60a5fa">string</span> nam, <span class="type" style="color:#60a5fa">int</span> a): Student(n, nam), age(a) {}
+};
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Student2</span>: <span class="kw" style="color:#c084fc">public</span> <span class="type" style="color:#60a5fa">Student1</span> {
+    <span class="type" style="color:#60a5fa">int</span> score;
+<span class="kw" style="color:#c084fc">public:</span>
+    <span class="cm" style="color:#94a3b8">// 只须调用直接基类 Student1 的构造函数</span>
+    Student2(<span class="type" style="color:#60a5fa">int</span> n, <span class="type" style="color:#60a5fa">string</span> nam, <span class="type" style="color:#60a5fa">int</span> a, <span class="type" style="color:#60a5fa">int</span> s): Student1(n, nam, a), score(s) {}
+    <span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">show_all</span>() { display(); cout<<<span class="str" style="color:#fbbf24">"age:"</span><<age<<<span class="str" style="color:#fbbf24">" score:"</span><<score<<endl; }
+};</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P4 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P4</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>写一个利用引用实现两数交换的函数，并说明引用的作用。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="cm" style="color:#94a3b8">// 引用作为函数参数（形参是实参的别名）</span>
+<span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">swap</span>(<span class="type" style="color:#60a5fa">int</span> &a, <span class="type" style="color:#60a5fa">int</span> &b) {
+    <span class="type" style="color:#60a5fa">int</span> temp = a;
+    a = b;
+    b = temp;
+}
+<span class="cm" style="color:#94a3b8">// 调用时直接传变量（不用取地址）</span>
+<span class="type" style="color:#60a5fa">int</span> i = <span class="num" style="color:#f472b6">3</span>, j = <span class="num" style="color:#f472b6">5</span>;
+swap(i, j);  <span class="cm" style="color:#94a3b8">// i=5, j=3</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P5 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P5</span>
+          <span class="q-tag q-tag-hard">必考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>设计一个基类 <code>Shape</code>，包含纯虚函数 <code>area()</code>。派生类 <code>Circle</code> 实现面积计算。展示利用基类指针实现多态的用法。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Shape</span> {
+<span class="kw" style="color:#c084fc">public:</span>
+    <span class="kw" style="color:#c084fc">virtual</span> <span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">area</span>() = <span class="num" style="color:#f472b6">0</span>;  <span class="cm" style="color:#94a3b8">// 纯虚函数</span>
+};
+<span class="kw" style="color:#c084fc">class</span> <span class="type" style="color:#60a5fa">Circle</span>: <span class="kw" style="color:#c084fc">public</span> <span class="type" style="color:#60a5fa">Shape</span> {
+    <span class="type" style="color:#60a5fa">float</span> r;
+<span class="kw" style="color:#c084fc">public:</span>
+    Circle(<span class="type" style="color:#60a5fa">float</span> rr): r(rr) {}
+    <span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">area</span>() { cout << <span class="num" style="color:#f472b6">3.14</span> * r * r; }
+};
+<span class="type" style="color:#60a5fa">void</span> <span class="fn" style="color:#34d399">fun</span>(Shape *ptr) { ptr->area(); }  <span class="cm" style="color:#94a3b8">// 动态关联</span>
+<span class="cm" style="color:#94a3b8">// 使用：</span>
+Circle c(<span class="num" style="color:#f472b6">15</span>);
+Shape *p = &c;
+fun(p);  <span class="cm" style="color:#94a3b8">// 输出 Circle 的 area</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P6 -->
+      <div class="q-card" data-ch="prog" data-answer="编程题">
+        <div class="q-head">
+          <span class="q-num">P6</span>
+          <span class="q-tag q-tag-mid">常考</span>
+          <span class="q-score">10分</span>
+        </div>
+        <div class="q-body">
+          <div class="q-text"><strong>题目：</strong>用函数模板实现求两个数中大数的函数，分别用 int、float、char 类型测试。</div>
+          <div class="answer-area">
+            <button class="btn-ans" onclick="toggleAnswer(this)" style="margin-bottom:6px">查看参考代码</button>
+            <div class="show-ans">
+<pre style="background:#1e293b;color:#e2e8f0;border-radius:6px;padding:10px;overflow-x:auto;font-size:12px;margin:4px 0;line-height:1.5">
+<span class="kw" style="color:#c084fc">template</span> &lt;<span class="kw" style="color:#c084fc">typename</span> T&gt;
+T <span class="fn" style="color:#34d399">my_max</span>(T a, T b) {
+    <span class="kw" style="color:#c084fc">return</span> (a > b) ? a : b;
+}
+<span class="cm" style="color:#94a3b8">// 测试</span>
+cout << my_max(<span class="num" style="color:#f472b6">3</span>, <span class="num" style="color:#f472b6">7</span>) << endl;          <span class="cm" style="color:#94a3b8">// int → 7</span>
+cout << my_max(<span class="num" style="color:#f472b6">45.78</span>, <span class="num" style="color:#f472b6">93.6</span>) << endl;     <span class="cm" style="color:#94a3b8">// float → 93.6</span>
+cout << my_max(<span class="str" style="color:#fbbf24">'a'</span>, <span class="str" style="color:#fbbf24">'A'</span>) << endl;       <span class="cm" style="color:#94a3b8">// char → 'a'</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 汇总答案 ===== -->
+    <section id="answer-sheet">
+      <h2>✅ 汇总答案</h2>
+      <p style="color:#6c757d;font-size:13px;margin-bottom:8px">方便考前快速核对，标 <strong style="color:#ef4444;">红</strong> 为必考重点。</p>
+      <div class="table-wrap" style="overflow-x:auto">
+        <table style="font-size:13px;border-collapse:collapse;width:100%">
+          <tr><th>题号</th><th>答案</th><th>题号</th><th>答案</th><th>题号</th><th>答案</th></tr>
+          <tr><td style="color:#ef4444">1</td><td style="color:#ef4444">B</td><td>2</td><td>A</td><td style="color:#ef4444">3</td><td style="color:#ef4444">C</td></tr>
+          <tr><td>4</td><td>D</td><td>5</td><td>正确</td><td style="color:#ef4444">6</td><td style="color:#ef4444">错误</td></tr>
+          <tr><td style="color:#ef4444">7</td><td style="color:#ef4444">正确</td><td>8</td><td>正确</td><td>9</td><td>&lt;iostream&gt;</td></tr>
+          <tr><td>10</td><td>endl</td><td>11</td><td>int</td><td style="color:#ef4444">12</td><td style="color:#ef4444">引用</td></tr>
+          <tr><td>13</td><td>函数原型</td><td style="color:#ef4444">14</td><td style="color:#ef4444">B</td><td style="color:#ef4444">15</td><td style="color:#ef4444">D</td></tr>
+          <tr><td>16</td><td>C</td><td style="color:#ef4444">17</td><td style="color:#ef4444">B</td><td style="color:#ef4444">18</td><td style="color:#ef4444">正确</td></tr>
+          <tr><td>19</td><td>错误</td><td style="color:#ef4444">20</td><td style="color:#ef4444">封装</td><td>21</td><td>分号(;)</td></tr>
+          <tr><td>22</td><td>public</td><td>23</td><td>消息</td><td>24</td><td>inline</td></tr>
+          <tr><td>25</td><td>错误</td><td style="color:#ef4444">26</td><td style="color:#ef4444">B</td><td style="color:#ef4444">27</td><td style="color:#ef4444">A</td></tr>
+          <tr><td style="color:#ef4444">28</td><td style="color:#ef4444">C</td><td>29</td><td>C</td><td style="color:#ef4444">30</td><td style="color:#ef4444">正确</td></tr>
+          <tr><td>31</td><td>错误</td><td>32</td><td>正确</td><td>33</td><td>错误</td></tr>
+          <tr><td>34</td><td>正确</td><td style="color:#ef4444">35</td><td style="color:#ef4444">类名</td><td>36</td><td>~</td></tr>
+          <tr><td>37</td><td>类模板</td><td>38</td><td>friend</td><td style="color:#ef4444">39</td><td style="color:#ef4444">D</td></tr>
+          <tr><td style="color:#ef4444">40</td><td style="color:#ef4444">C</td><td>41</td><td>A</td><td style="color:#ef4444">42</td><td style="color:#ef4444">错误</td></tr>
+          <tr><td>43</td><td>正确</td><td>44</td><td>错误</td><td style="color:#ef4444">45</td><td style="color:#ef4444">operator</td></tr>
+          <tr><td>46</td><td>int</td><td style="color:#ef4444">47</td><td style="color:#ef4444">C</td><td style="color:#ef4444">48</td><td style="color:#ef4444">B</td></tr>
+          <tr><td style="color:#ef4444">49</td><td style="color:#ef4444">D</td><td style="color:#ef4444">50</td><td style="color:#ef4444">正确</td><td>51</td><td>正确</td></tr>
+          <tr><td style="color:#ef4444">52</td><td style="color:#ef4444">正确</td><td>53</td><td>直接基类</td><td style="color:#ef4444">54</td><td style="color:#ef4444">virtual</td></tr>
+          <tr><td>55</td><td>友元函数</td><td>56</td><td>派生类</td><td>57</td><td>错误</td></tr>
+          <tr><td>58</td><td>正确</td><td style="color:#ef4444">59</td><td style="color:#ef4444">C</td><td style="color:#ef4444">60</td><td style="color:#ef4444">D</td></tr>
+          <tr><td>61</td><td>B</td><td style="color:#ef4444">62</td><td style="color:#ef4444">正确</td><td>63</td><td>正确</td></tr>
+          <tr><td>64</td><td>错误</td><td style="color:#ef4444">65</td><td style="color:#ef4444">virtual</td><td style="color:#ef4444">66</td><td style="color:#ef4444">0</td></tr>
+          <tr><td>67</td><td>抽象类</td><td>68</td><td>析构函数</td><td colspan="2"></td></tr>
+        </table>
+      </div>
+      <p style="margin-top:8px;font-size:13px;color:#6c757d">编程题参考代码已在题目下方给出，请理解后默写练习。</p>
+    </section>
+
+    <p class="resp-tip">📖 基于课堂课件与教材出题 · 考前复习利器</p>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// 侧边栏
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function closeS() { document.getElementById('sidebar').classList.remove('open'); }
+
+// 查看答案
+function toggleAnswer(btn) {
+  const answerDiv = btn.parentElement.querySelector('.show-ans');
+  if (answerDiv) {
+    const isHidden = !answerDiv.style.display || answerDiv.style.display === 'none';
+    answerDiv.style.display = isHidden ? 'block' : 'none';
+    btn.textContent = isHidden ? '收起答案' : '查看答案';
+    btn.classList.toggle('viewed', isHidden);
+    updateStats();
+  }
+}
+
+// 统计更新
+function updateStats() {
+  const viewed = document.querySelectorAll('.btn-ans.viewed').length;
+  const total = document.querySelectorAll('.q-card').length;
+  let correct = 0;
+  let wrong = 0;
+
+  document.querySelectorAll('.q-card[data-answer]').forEach(card => {
+    const type = card.dataset.type;
+    if (type === 'choice' || type === 'judge') {
+      const selected = card.querySelector('input[type="radio"]:checked');
+      if (selected) {
+        const isRight = selected.value === card.dataset.answer;
+        const ansDiv = card.querySelector('.show-ans');
+        if (ansDiv) {
+          ansDiv.classList.remove('correct', 'wrong');
+          ansDiv.classList.add(isRight ? 'correct' : 'wrong');
+        }
+        if (isRight) correct++; else wrong++;
+      }
+    }
+    if (type === 'fill') {
+      const input = card.querySelector('input[type="text"]');
+      if (input && input.value.trim() !== '') {
+        const isRight = input.value.trim() === card.dataset.answer;
+        const ansDiv = card.querySelector('.show-ans');
+        if (ansDiv) {
+          ansDiv.classList.remove('correct', 'wrong');
+          ansDiv.classList.add(isRight ? 'correct' : 'wrong');
+        }
+        if (isRight) correct++; else wrong++;
+      }
+    }
+  });
+
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('answeredCount').textContent = viewed;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+}
+
+document.addEventListener('change', updateStats);
+document.addEventListener('input', updateStats);
+
+// 填写输入
+function fillInput(el) { updateStats(); }
+
+// 显示全部答案
+function checkAll() {
+  document.querySelectorAll('.btn-ans').forEach(btn => {
+    const ansDiv = btn.parentElement.querySelector('.show-ans');
+    if (ansDiv) {
+      ansDiv.style.display = 'block';
+      btn.textContent = '收起答案';
+      btn.classList.add('viewed');
+      // 同时展示所有编程题答案
+    }
+  });
+  updateStats();
+}
+
+// 重置
+function resetAll() {
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+  document.querySelectorAll('.btn-ans').forEach(btn => {
+    const ansDiv = btn.parentElement.querySelector('.show-ans');
+    if (ansDiv) {
+      ansDiv.style.display = 'none';
+      btn.textContent = '查看答案';
+      btn.classList.remove('viewed');
+    }
+  });
+  document.querySelectorAll('.show-ans').forEach(d => d.classList.remove('correct', 'wrong'));
+  updateStats();
+}
+
+// 返回顶部
+window.addEventListener('scroll', () => {
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 300);
+});
+
+// 侧边栏高亮
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      const id = e.target.id;
+      document.querySelectorAll(`.sidebar a[href="#${id}"]`).forEach(a => a.classList.add('active'));
+    }
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+document.querySelectorAll('section[id], div[id]').forEach(s => observer.observe(s));
+
+updateStats();
+</script>
+
+</body>
+</html>

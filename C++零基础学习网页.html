@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ 零基础学习 · 图文精讲</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1a1a2e;line-height:1.8;font-size:15px}
+a{color:#2563eb;text-decoration:none}
+
+.top-bar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e0e0e0;padding:0 16px;height:52px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.top-bar .logo{font-weight:700;font-size:17px;color:#2563eb}
+.top-bar button{background:none;border:1px solid #e0e0e0;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px;color:#333}
+
+.container{display:flex;max-width:1200px;margin:0 auto}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;padding:12px 8px;background:#fff;border-right:1px solid #e0e0e0}
+.sidebar h3{font-size:12px;color:#6c757d;padding:6px 12px 2px;text-transform:uppercase;letter-spacing:1px}
+.sidebar a{display:block;padding:5px 10px;font-size:13px;border-radius:6px;margin:1px 0;color:#1a1a2e;transition:.15s}
+.sidebar a:hover{background:#dbeafe;color:#2563eb}
+.sidebar a.active{background:#dbeafe;color:#2563eb;font-weight:600}
+.sidebar .ch-sub a{padding-left:26px;font-size:12px;color:#6c757d}
+@media(max-width:850px){
+  .sidebar{display:none;position:fixed;left:0;top:52px;width:270px;height:calc(100vh - 52px);z-index:99;box-shadow:4px 0 12px rgba(0,0,0,.1)}
+  .sidebar.open{display:block}
+  .main{padding:12px}
+}
+
+.main{flex:1;min-width:0;padding:20px 24px 60px}
+
+/* 内容卡片 */
+.sec-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:20px 22px;margin-bottom:20px}
+.sec-card h1{font-size:24px;margin-bottom:4px}
+.sec-card h2{font-size:18px;margin:18px 0 10px;padding-bottom:6px;border-bottom:2px solid #dbeafe;color:#1e40af}
+.sec-card h3{font-size:15px;margin:14px 0 8px;color:#374151}
+.sec-card h4{font-size:14px;margin:10px 0 5px;color:#4b5563}
+
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap;margin:0 4px 4px 0}
+.tag-h{background:#fef2f2;color:#ef4444;border:1px solid #fecaca}
+.tag-m{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.tag-l{background:#f3f4f6;color:#6b7280;border:1px solid #d1d5db}
+
+/* 代码 */
+pre{background:#1e293b;color:#e2e8f0;border-radius:8px;padding:14px 16px;overflow-x:auto;margin:10px 0;font-size:13px;line-height:1.6;font-family:"SFMono-Regular","Fira Code",monospace}
+pre .k{color:#c084fc} pre .t{color:#60a5fa} pre .f{color:#34d399} pre .s{color:#fbbf24}
+pre .c{color:#94a3b8;font-style:italic} pre .n{color:#f472b6}
+
+/* 说明框 */
+.ibox{background:#eff6ff;border-left:4px solid #2563eb;border-radius:6px;padding:12px 16px;margin:10px 0;font-size:14px}
+.ibox strong{color:#1e40af}
+.cbox{background:#fef2f2;border-left:4px solid #ef4444;border-radius:6px;padding:12px 16px;margin:10px 0;font-size:14px}
+.cbox strong{color:#dc2626}
+.tbox{background:#f0fdf4;border-left:4px solid #22c55e;border-radius:6px;padding:12px 16px;margin:10px 0;font-size:14px}
+
+/* 例题 */
+.exbox{border:1px solid #e0e0e0;border-radius:10px;margin:12px 0;overflow:hidden}
+.ext{background:#f8fafc;padding:10px 14px;font-weight:600;font-size:14px;border-bottom:1px solid #e0e0e0}
+.exb{padding:12px 14px;background:#fff;font-size:14px}
+.exb .step{color:#2563eb;font-weight:600;margin-top:8px;display:block}
+.exb .highlight{background:#fef3c7;padding:1px 4px;border-radius:3px}
+.exb p{margin:4px 0}
+
+/* 图解 */
+.chart-wrap{background:#f8fafc;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin:12px 0;overflow-x:auto;text-align:center}
+.chart-wrap svg{max-width:100%;height:auto}
+
+/* 表格 */
+.tw{overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 12px;text-align:left;border:1px solid #e0e0e0}
+th{background:#f1f5f9;font-weight:600;color:#374151}
+
+/* 速记卡片 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0}
+.card{border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;background:#fff}
+.card h4{font-size:13px;margin-bottom:4px;color:#1e40af}
+.card pre{margin:6px 0 0;font-size:11px;padding:8px}
+
+/* 分步指南 */
+.guide-step{display:flex;gap:12px;margin:8px 0;padding:8px 12px;background:#f8fafc;border-radius:8px;border-left:3px solid #2563eb}
+.guide-step .snum{background:#2563eb;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.guide-step .scnt{font-size:14px;flex:1}
+
+.concept-pair{display:flex;gap:16px;margin:10px 0;flex-wrap:wrap}
+.concept-pair > div{flex:1;min-width:200px;background:#f8fafc;border-radius:8px;padding:12px 14px;border:1px solid #e0e0e0}
+.concept-pair .left{border-left:3px solid #2563eb}
+.concept-pair .right{border-left:3px solid #ef4444}
+
+.back-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;align-items:center;justify-content:center;z-index:50}
+.back-top.show{display:flex}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button onclick="toggleSidebar()">☰ 目录</button>
+  <div class="logo">C++ 零基础图文学习</div>
+</div>
+
+<div class="container">
+  <nav class="sidebar" id="sidebar">
+    <h3>目录</h3>
+    <a href="#ch1" onclick="closeS()" class="active">📘 第1章 C++入门</a>
+    <a href="#ch2" onclick="closeS()">📗 第2章 类和对象</a>
+    <a href="#ch3" onclick="closeS()">📙 第3章 构造/const/复制/友元/模板</a>
+    <a href="#ch4" onclick="closeS()">📕 第4章 运算符重载</a>
+    <a href="#ch5" onclick="closeS()">📘 第5章 继承与派生</a>
+    <a href="#ch6" onclick="closeS()">📗 第6章 多态与虚函数</a>
+  </nav>
+
+  <div class="main">
+
+    <!-- ===== 第一章 ===== -->
+    <section id="ch1">
+      <div class="sec-card">
+        <h1>📘 第1章 C++ 入门知识</h1>
+        <p style="color:#6c757d;font-size:14px">从零开始，先看懂最简单的 C++ 程序长什么样</p>
+
+        <!-- 1.1 最简单的C++程序 -->
+        <h2>1.1 最简单的 C++ 程序 <span class="tag tag-m">常考</span></h2>
+
+        <div class="tbox"><strong>🎯 学习目标：</strong>看完这段代码，你要知道每一行是干什么的。</div>
+
+        <pre><span class="c">// 这是我的第一个 C++ 程序</span>
+<span class="k">#include</span> <span class="s">&lt;iostream&gt;</span>     <span class="c">// ① 导入输入输出工具</span>
+<span class="k">using namespace</span> <span class="t">std</span>;       <span class="c">// ② 告诉编译器用标准命名空间</span>
+
+<span class="t">int</span> <span class="f">main</span>() {                 <span class="c">// ③ 主函数——程序的入口</span>
+    <span class="k">cout</span> << <span class="s">"Hello World!"</span>;  <span class="c">// ④ 输出一句话</span>
+    <span class="k">return</span> <span class="n">0</span>;                 <span class="c">// ⑤ 告诉系统程序正常结束</span>
+}</pre>
+
+        <div class="guide-step">
+          <div class="snum">1</div>
+          <div class="scnt"><strong>#include &lt;iostream&gt;</strong> — 就像做菜前先拿工具。iostream 是"输入输出流"头文件，你要用 cout（输出）和 cin（输入）就必须先写这行。</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">2</div>
+          <div class="scnt"><strong>using namespace std;</strong> — 标准库的东西都装在 std 这个"大盒子"里，写了这行就不用每次加 std:: 前缀了。</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">3</div>
+          <div class="scnt"><strong>int main() { }</strong> — main 是程序的大门，程序从这里开始执行。<code>int</code> 表示它最后要返回一个整数给操作系统。</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">4</div>
+          <div class="scnt"><strong>cout &lt;&lt; "Hello"</strong> — cout 是"屏幕输出"的水龙头，<code>&lt;&lt;</code> 是"把内容推出去"的管道。</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">5</div>
+          <div class="scnt"><strong>return 0;</strong> — 告诉电脑"一切正常，我结束了"。如果出错了就返回非零数字。</div>
+        </div>
+
+        <!-- 输入输出图解 -->
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 160" width="100%">
+            <defs>
+              <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text x="340" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">C++ 输入输出流程</text>
+
+            <!-- cin 输入 -->
+            <rect x="60" y="44" width="120" height="44" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="120" y="66" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">键盘输入</text>
+            <text x="120" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">cin >></text>
+
+            <line x1="180" y1="66" x2="250" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr1)"/>
+            <text x="215" y="56" text-anchor="middle" font-size="11" fill="#6c757d">数据流向</text>
+
+            <rect x="250" y="44" width="140" height="44" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="320" y="66" text-anchor="middle" font-size="13" fill="#0f6e56" dominant-baseline="central">内存变量</text>
+            <text x="320" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">int a; 存储数据</text>
+
+            <line x1="390" y1="66" x2="460" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr1)"/>
+            <rect x="460" y="44" width="140" height="44" rx="8" fill="#f0dbe5" stroke="#993556" stroke-width="0.5"/>
+            <text x="530" y="66" text-anchor="middle" font-size="13" fill="#993556" dominant-baseline="central">屏幕输出</text>
+            <text x="530" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">cout <<</text>
+
+            <!-- 示例 -->
+            <text x="120" y="124" text-anchor="middle" font-size="12" fill="#6c757d">输入: 20 回车</text>
+            <text x="320" y="124" text-anchor="middle" font-size="12" fill="#6c757d">a = 20</text>
+            <text x="530" y="124" text-anchor="middle" font-size="12" fill="#6c757d">输出: a=20</text>
+          </svg>
+        </div>
+
+        <div class="ibox"><strong>💡 记法：</strong><code>cin >></code> 箭头方向——从键盘进入变量（人→电脑）；<code>cout <<</code> 箭头方向——从变量输出到屏幕（电脑→人）。</div>
+
+        <h3>📖 逐行详解：求两数之和</h3>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> 例题：输入两个数，输出它们的和</div>
+          <div class="exb">
+            <pre><span class="k">#include</span> <span class="s">&lt;iostream&gt;</span>
+<span class="k">using namespace</span> <span class="t">std</span>;
+<span class="t">int</span> <span class="f">main</span>() {
+    <span class="t">int</span> a, b, sum;          <span class="c">// ① 声明3个装整数的盒子</span>
+    <span class="k">cin</span> >> a >> b;           <span class="c">// ② 从键盘取两个数，存入a和b</span>
+    sum = a + b;             <span class="c">// ③ 计算a+b，结果放sum里</span>
+    <span class="k">cout</span> << <span class="s">"a+b="</span> << sum;   <span class="c">// ④ 输出 "a+b=" 然后输出 sum 的值</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</pre>
+
+            <span class="step">🔢 分步走：</span>
+            <p>假设输入：<code>3 5</code>（两个数之间用空格隔开，然后按回车）</p>
+            <p>① <code>int a, b, sum;</code> → 在内存里画了 3 个小格子，分别叫 a、b、sum。此时它们还没值。</p>
+            <p>② <code>cin >> a >> b;</code> → 你输入 "3 5" 回车，系统把 3 放到 a 格子里，5 放到 b 格子里。</p>
+            <p>③ <code>sum = a + b;</code> → 从 a 格子里拿 3，从 b 格子里拿 5，加起来得到 8，存到 sum 格子里。</p>
+            <p>④ <code>cout << "a+b=" << sum;</code> → 屏幕上显示：<code>a+b=8</code></p>
+          </div>
+        </div>
+
+        <!-- ===== 新增：函数原型声明（课件1.3.3） ===== -->
+        <h2>函数原型声明 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>C++ 规定，如果函数调用写在函数定义<strong>之前</strong>，调用前必须先声明函数的<strong>原型</strong>——告诉编译器"这个函数长什么样子"。</div>
+        <pre><span class="c">// 例1.3 求两个数中的大数</span>
+<span class="k">#include</span> <span class="s">&lt;iostream&gt;</span>
+<span class="k">using namespace</span> <span class="t">std</span>;
+
+<span class="t">int</span> <span class="f">main</span>() {
+    <span class="t">int</span> a, b, c;
+    <span class="k">cin</span> >> a >> b;
+    c = max(a, b);               <span class="c">// ⚠️ 调用时 max 还没定义，所以要提前声明</span>
+    cout << <span class="s">"max="</span> << c;
+    <span class="k">return</span> <span class="n">0</span>;
+}
+
+<span class="t">int</span> <span class="f">max</span>(<span class="t">int</span> x, <span class="t">int</span> y) {       <span class="c">// 函数定义在调用之后</span>
+    <span class="k">return</span> (x > y) ? x : y;
+}</pre>
+        <p>必须在 main 之前加一行：<code>int max(int x, int y);</code> 或简写 <code>int max(int, int);</code>（形参名可以省略）。C++ 编译时<strong>只检查参数的数据类型</strong>，不检查形参名。</p>
+
+        <!-- 函数重载图解 -->
+        <h2>1.2 函数的重载 <span class="tag tag-h">必考重点</span></h2>
+
+        <div class="ibox"><strong>一句话：</strong>同一个函数名，根据你给的<strong>参数不同</strong>，自动调用对应的版本。就像你去柜台说"我要一杯"——收银员会根据你说的"咖啡"还是"奶茶"给你不同的东西。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 200" width="100%">
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">函数重载图解：同名函数，不同参数</text>
+
+            <!-- 调用端 -->
+            <rect x="240" y="40" width="200" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="340" y="65" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">max(3, 7, 5)   ← 3个整数</text>
+
+            <line x1="280" y1="80" x2="280" y2="110" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="400" y1="80" x2="400" y2="110" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+            <!-- 两个版本 -->
+            <rect x="140" y="110" width="280" height="36" rx="8" fill="#f0dbe5" stroke="#993556" stroke-width="0.5"/>
+            <text x="280" y="133" text-anchor="middle" font-size="12" fill="#993556" dominant-baseline="central">int max(int a, int b, int c) ← 系统匹配这个</text>
+
+            <rect x="140" y="150" width="280" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="280" y="173" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">float max(float a, float b, float c) ← 不匹配</text>
+          </svg>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考重点</span> 例题：函数重载——求最大值</div>
+          <div class="exb">
+            <pre><span class="c">// 版本一：3个整数比大小</span>
+<span class="t">int</span> <span class="f">max</span>(<span class="t">int</span> a, <span class="t">int</span> b, <span class="t">int</span> c) {
+    <span class="k">if</span> (b > a) a = b;
+    <span class="k">if</span> (c > a) a = c;
+    <span class="k">return</span> a;
+}
+
+<span class="c">// 版本二：3个浮点数比大小</span>
+<span class="t">float</span> <span class="f">max</span>(<span class="t">float</span> a, <span class="t">float</span> b, <span class="t">float</span> c) {
+    <span class="k">if</span> (b > a) a = b;
+    <span class="k">if</span> (c > a) a = c;
+    <span class="k">return</span> a;
+}</pre>
+
+            <span class="step">🔢 运行过程：</span>
+            <p>① <code>int m = max(3, 7, 5);</code> → 编译器一看：传了3个 int，好，我调 int 版本 → 返回 7</p>
+            <p>② <code>float n = max(4.5, 9.1, 6.3);</code> → 编译器一看：传了3个 float，调 float 版本 → 返回 9.1</p>
+            <p>③ 如果只写 <code>int max(int a, int b) { }</code> 和 <code>float max(int a, int b, int c) { }</code>，参数<strong>个数不同</strong>也算重载。</p>
+            <div class="cbox"><strong>⚠ 禁止：</strong>不允许两个函数<strong>参数完全一样</strong>、仅<strong>返回值不同</strong>（比如一个返回 int，一个返回 float），因为编译器不知道调哪个！</div>
+          </div>
+        </div>
+
+        <!-- 引用图解 -->
+        <h2>1.3 变量的引用 <span class="tag tag-h">必考重点</span></h2>
+
+        <div class="ibox"><strong>一句话：</strong>引用就是给变量取个<strong>小名/别名</strong>。你叫"张三"，你妈叫你"三儿"，叫的是同一个人。代码里 <code>int &b = a;</code> 就是 "b 是 a 的小名"。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 150" width="100%">
+            <defs>
+              <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">引用图解：两个名字，同一个内存格子</text>
+
+            <rect x="100" y="50" width="480" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <line x1="360" y1="50" x2="360" y2="100" stroke="#d1d5db" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="230" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af" dominant-baseline="central">int a = 10</text>
+            <text x="470" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#993556" dominant-baseline="central">int &b = a</text>
+
+            <line x1="340" y1="115" x2="340" y2="135" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+            <rect x="215" y="100" width="250" height="30" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="0.5"/>
+            <text x="340" y="120" text-anchor="middle" font-size="12" fill="#92400e" dominant-baseline="central">✅ a 改了 → b 也跟着变；b 改了 → a 也跟着变</text>
+          </svg>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考重点</span> 引用做参数——两数交换</div>
+          <div class="exb">
+            <pre><span class="t">void</span> <span class="f">swap</span>(<span class="t">int</span> &a, <span class="t">int</span> &b) {  <span class="c">// int &a 的意思是 "a是实参的别名"</span>
+    <span class="t">int</span> temp = a;               <span class="c">// 把 a 的值保存到临时变量</span>
+    a = b;                       <span class="c">// 把 b 的值赋给 a（其实改的是实参本身）</span>
+    b = temp;                    <span class="c">// 把保存的值赋给 b</span>
+}
+
+<span class="t">int</span> <span class="f">main</span>() {
+    <span class="t">int</span> i = <span class="n">3</span>, j = <span class="n">5</span>;
+    swap(i, j);
+    <span class="c">// 现在 i=5, j=3 ✅ 真的交换了</span>
+    <span class="k">return</span> <span class="n">0</span>;
+}</pre>
+
+            <span class="step">🔢 逐行分析（小白版）：</span>
+            <p>① <code>swap(i, j)</code> 被调用时，参数传递相当于 <code>int &a = i; int &b = j;</code>（a 是小 i，b 是小 j）</p>
+            <p>② <code>int temp = a;</code> → temp = 3（把 i 的当前值 3 存起来）</p>
+            <p>③ <code>a = b;</code> → a = 5，但 a 是 i 的别名 → 所以 i 也变成了 5</p>
+            <p>④ <code>b = temp;</code> → b = 3，b 是 j 的别名 → j 变成了 3</p>
+            <p style="color:#2563eb;font-weight:600">结果：i=5, j=3 ✅ 交换成功！</p>
+          </div>
+        </div>
+
+        <!-- 函数模板 -->
+        <h2>1.4 函数模板 <span class="tag tag-m">常考</span></h2>
+
+        <div class="ibox"><strong>一句话：</strong>当你有一堆函数，<strong>逻辑一模一样</strong>，只是数据类型不同，就用模板。T 像一个"万能占位符"，你传什么类型它就成了什么类型。</div>
+
+        <div class="concept-pair">
+          <div class="left">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#1e40af">❌ 不用模板（写3遍）</h4>
+            <pre style="font-size:11px;padding:8px;margin:0"><span class="t">int</span> max(<span class="t">int</span> a, <span class="t">int</span> b) { <span class="k">return</span> a>b?a:b; }
+<span class="t">float</span> max(<span class="t">float</span> a, <span class="t">float</span> b) { <span class="k">return</span> a>b?a:b; }
+<span class="t">char</span> max(<span class="t">char</span> a, <span class="t">char</span> b) { <span class="k">return</span> a>b?a:b; }</pre>
+          </div>
+          <div class="right">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#dc2626">✅ 用模板（写1次）</h4>
+            <pre style="font-size:11px;padding:8px;margin:0"><span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
+T max(T a, T b) {
+    <span class="k">return</span> a > b ? a : b;
+}</pre>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="snum">🔑</div>
+          <div class="scnt"><strong>理解模板的"魔法"：</strong>编译器看到你写 <code>max(3, 7)</code>，自动把 T 替换成 int；看到 <code>max(4.5, 9.1)</code>，把 T 替换成 float。就像盖房子用同一个图纸，换不同的材料。</div>
+        </div>
+
+        <div class="cbox"><strong>⚠ 限制：</strong>函数模板只适用于<strong>参数个数相同</strong>、仅类型不同的情况。如果参数个数不同（一个要 2 个参数，一个要 3 个参数），函数模板不行，必须用函数重载。</div>
+
+        <!-- ===== 新增：默认参数 ===== -->
+        <h2>1.5 有默认参数的函数 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>给函数的形参定一个"默认值"。如果你调用时没给这个参数，系统就用默认值。</div>
+        <pre><span class="c">// 定义：r 的默认值是 12.5</span>
+<span class="t">float</span> <span class="f">volume</span>(<span class="t">float</span> h, <span class="t">float</span> r = <span class="n">12.5</span>) {
+    <span class="k">return</span> <span class="n">3.14</span> * r * r * h;
+}
+
+volume(<span class="n">45.6</span>);              <span class="c">// r 取默认值 12.5 → 计算半径12.5的圆柱</span>
+volume(<span class="n">32.5</span>, <span class="n">10.5</span>);         <span class="c">// r 取 10.5 → 覆盖默认值</span></pre>
+        <div class="cbox"><strong>⚠ 必须遵守的规则（考试常考）：</strong><br>
+        ① 有默认值的形参必须放在<strong>形参表最右边</strong>，不能交错。如 <code>void func(int a, int b=2, int c)</code> ❌ 错误！<br>
+        ② 一个函数名不能<strong>同时</strong>用于重载函数和带默认参数的函数。如 <code>int max(int a, int b, int c=100)</code> 同时又有一个 <code>int max(int a, int b)</code> — 调用 <code>max(5, 23)</code> 时编译器不知道调哪个 ❌</div>
+
+        <!-- ===== 新增：三种参数传递方式对比 ===== -->
+        <h2>1.6 三种参数传递方式对比 <span class="tag tag-h">必考重点</span></h2>
+        <div class="ibox"><strong>核心：</strong>函数参数传递有三种方式。区别在于——形参改了，实参变不变？</div>
+        <div class="tw">
+        <table>
+          <tr><th>传递方式</th><th>写法</th><th>形参改实参？</th><th>本质</th></tr>
+          <tr><td>值传递</td><td><code>void f(int x)</code></td><td>❌ 不变</td><td>复制一份副本，形参实参各自独立</td></tr>
+          <tr><td>指针传递</td><td><code>void f(int *p)</code></td><td>✅ 能改</td><td>传的是地址，通过地址改原值</td></tr>
+          <tr><td>引用传递</td><td><code>void f(int &x)</code></td><td>✅ 能改</td><td>形参是实参的别名，就是同一个</td></tr>
+        </table>
+        </div>
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 三版 swap 函数对比</div>
+          <div class="exb">
+            <pre><span class="c">// ① 值传递 — 交换失败 ❌</span>
+<span class="t">void</span> <span class="f">swap1</span>(<span class="t">int</span> a, <span class="t">int</span> b) { <span class="t">int</span> t = a; a = b; b = t; }
+<span class="c">// swap1(i, j) → i=3, j=5 没变！因为 a,b 是 i,j 的副本</span>
+
+<span class="c">// ② 指针传递 — 交换成功 ✅</span>
+<span class="t">void</span> <span class="f">swap2</span>(<span class="t">int</span> *a, <span class="t">int</span> *b) { <span class="t">int</span> t = *a; *a = *b; *b = t; }
+<span class="c">// swap2(&i, &j) → i=5, j=3 需要取地址</span>
+
+<span class="c">// ③ 引用传递 — 交换成功 ✅（最简洁直观）</span>
+<span class="t">void</span> <span class="f">swap3</span>(<span class="t">int</span> &a, <span class="t">int</span> &b) { <span class="t">int</span> t = a; a = b; b = t; }
+<span class="c">// swap3(i, j) → i=5, j=3 不用取地址，直接传变量</span></pre>
+          </div>
+        </div>
+
+        <!-- ===== 新增：new/delete ===== -->
+        <h2>1.7 动态内存分配：new / delete <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>程序运行时需要多少内存就<code>new</code>多少，用完用<code>delete</code>归还。就像去图书馆借书——用 <code>new</code> 借出来，用 <code>delete</code> 还回去。</div>
+        <pre><span class="c">// 分配一个整数</span>
+<span class="t">int</span> *p = <span class="k">new</span> <span class="t">int</span>(<span class="n">5</span>);      <span class="c">// new 返回指针，分配一个 int 并赋值为 5</span>
+cout << *p;                   <span class="c">// 输出 5</span>
+<span class="k">delete</span> p;                      <span class="c">// 释放内存（还书）</span>
+
+<span class="c">// 分配一个数组</span>
+<span class="t">int</span> *arr = <span class="k">new</span> <span class="t">int</span>[<span class="n">10</span>];    <span class="c">// 分配10个int的数组</span>
+arr[<span class="n">0</span>] = <span class="n">1</span>;
+<span class="k">delete[]</span> arr;                 <span class="c">// 释放数组（记得加 []）</span></pre>
+        <div class="cbox"><strong>⚠ 常见错误：</strong>① <code>new</code> 了没 <code>delete</code> → 内存泄漏；② <code>delete</code> 了又用 → 野指针；③ 数组 <code>new[]</code> 但用了 <code>delete</code>（没加 []）→ 只释放了第一个元素</div>
+
+        <!-- ===== 新增：inline ===== -->
+        <h2>1.8 inline 内置函数 <span class="tag tag-l">基础了解</span></h2>
+        <div class="ibox"><strong>一句话：</strong>函数前面加 <code>inline</code>，编译器会把函数代码直接"复制粘贴"到调用处，省去调用的开销。适合小函数（几行），大函数用了反而更慢。</div>
+        <pre><span class="k">inline</span> <span class="t">int</span> <span class="f">max</span>(<span class="t">int</span> a, <span class="t">int</span> b) { <span class="k">return</span> a > b ? a : b; }
+<span class="c">// 调用 max(3, 5) → 编译时直接替换为 3>5?3:5，没有函数调用的时间</span></pre>
+        <p>类内定义的成员函数<strong>默认是 inline</strong> 的。</p>
+
+        <h2>1.9 作用域运算符 :: <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong><code>::</code> 像是一个"指路牌"，告诉编译器"这个成员是哪个类的"。比如 <code>Student::display()</code> 表示"Student类的display函数"。</div>
+        <pre><span class="c">// ① 类外定义成员函数时必用</span>
+<span class="t">void</span> Student::<span class="f">display</span>() { ... }   <span class="c">// 告诉编译器这是 Student 类的函数</span>
+
+<span class="c">// ② 访问静态成员</span>
+cout << Student::count;              <span class="c">// 不用创建对象就能访问</span>
+
+<span class="c">// ③ 解决重名冲突</span>
+c1.A::f();   <span class="c">// 明确调用基类 A 的 f()</span></pre>
+      </div>
+    </section>
+
+    <!-- ===== 第二章 ===== -->
+    <section id="ch2">
+      <div class="sec-card">
+        <h1>📗 第2章 类和对象</h1>
+        <p style="color:#6c757d;font-size:14px">这是 C++ 最关键的概念，理解了类和对象，才算入了面向对象的大门。</p>
+
+        <h2>2.1 什么是面向对象？<span class="tag tag-h">必考</span></h2>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 200" width="100%">
+            <defs>
+              <marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">面向过程 vs 面向对象</text>
+
+            <!-- 面向过程 -->
+            <rect x="40" y="44" width="280" height="140" rx="12" fill="#f1f5f9" stroke="#d1d5db" stroke-width="0.5"/>
+            <text x="180" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#374151">面向过程：按步骤做事</text>
+
+            <rect x="60" y="82" width="100" height="36" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="110" y="105" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">数据1</text>
+            <rect x="200" y="82" width="100" height="36" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="250" y="105" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">数据2</text>
+
+            <rect x="60" y="130" width="100" height="36" rx="6" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="110" y="153" text-anchor="middle" font-size="11" fill="#dc2626" dominant-baseline="central">函数A</text>
+            <text x="110" y="165" text-anchor="middle" font-size="9" fill="#d1d5db" dominant-baseline="central">操作数据1,2</text>
+            <rect x="200" y="130" width="100" height="36" rx="6" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="250" y="153" text-anchor="middle" font-size="11" fill="#dc2626" dominant-baseline="central">函数B</text>
+            <text x="250" y="165" text-anchor="middle" font-size="9" fill="#d1d5db" dominant-baseline="central">操作数据1,2</text>
+
+            <line x1="160" y1="100" x2="200" y2="100" stroke="#6b7280" stroke-width="0.5" stroke-dasharray="3"/>
+            <line x1="160" y1="148" x2="200" y2="148" stroke="#6b7280" stroke-width="0.5" stroke-dasharray="3"/>
+
+            <!-- vs -->
+            <text x="340" y="115" text-anchor="middle" font-size="22" font-weight="bold" fill="#6b7280">VS</text>
+
+            <!-- 面向对象 -->
+            <rect x="360" y="44" width="280" height="140" rx="12" fill="#f1f5f9" stroke="#d1d5db" stroke-width="0.5"/>
+            <text x="500" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#374151">面向对象：封装成整体</text>
+
+            <!-- 对象A -->
+            <rect x="380" y="80" width="120" height="90" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="440" y="102" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f6e56" dominant-baseline="central">对象A</text>
+            <rect x="390" y="110" width="100" height="20" rx="4" fill="#ccf0da" stroke="#0f6e56" stroke-width="0.3"/>
+            <text x="440" y="125" text-anchor="middle" font-size="10" fill="#065f46" dominant-baseline="central">数据A1, A2</text>
+            <rect x="390" y="135" width="100" height="20" rx="4" fill="#fce7e7" stroke="#ef4444" stroke-width="0.3"/>
+            <text x="440" y="150" text-anchor="middle" font-size="10" fill="#dc2626" dominant-baseline="central">操作A的函数</text>
+
+            <!-- 对象B -->
+            <rect x="510" y="80" width="120" height="90" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="570" y="102" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f6e56" dominant-baseline="central">对象B</text>
+            <rect x="520" y="110" width="100" height="20" rx="4" fill="#ccf0da" stroke="#0f6e56" stroke-width="0.3"/>
+            <text x="570" y="125" text-anchor="middle" font-size="10" fill="#065f46" dominant-baseline="central">数据B1, B2</text>
+            <rect x="520" y="135" width="100" height="20" rx="4" fill="#fce7e7" stroke="#ef4444" stroke-width="0.3"/>
+            <text x="570" y="150" text-anchor="middle" font-size="10" fill="#dc2626" dominant-baseline="central">操作B的函数</text>
+          </svg>
+          <p style="font-size:12px;color:#6c757d;text-align:center;margin-top:8px">左边：所有函数都能动所有数据，乱成一团。右边：数据和操作它自己的函数打包在一起，互不干扰。</p>
+        </div>
+
+        <h3>面向对象四大特征 <span class="tag tag-h">必考重点</span></h3>
+
+        <div class="cards">
+          <div class="card">
+            <h4>🔮 抽象</h4>
+            <p style="font-size:13px">把现实中的事物简化成程序里的"类"。</p>
+            <p style="font-size:12px;color:#6c757d">比如：学生类 = 学号 + 姓名 + 成绩 + 学习行为</p>
+          </div>
+          <div class="card">
+            <h4>📦 封装</h4>
+            <p style="font-size:13px">把数据藏起来，只开放必要的接口。</p>
+            <p style="font-size:12px;color:#6c757d">就像手机——你只按按钮，不用管内部电路</p>
+          </div>
+          <div class="card">
+            <h4>🧬 继承</h4>
+            <p style="font-size:13px">子类"复制"父类的全部能力，还能加新的。</p>
+            <p style="font-size:12px;color:#6c757d">学生继承人的特征，再增加学号、考试</p>
+          </div>
+          <div class="card">
+            <h4>🔄 多态</h4>
+            <p style="font-size:13px">同样的命令，不同对象做出不同反应。</p>
+            <p style="font-size:12px;color:#6c757d">"叫" → 狗汪汪，猫喵喵</p>
+          </div>
+        </div>
+
+        <!-- 类声明 -->
+        <h2>2.2 类的声明 <span class="tag tag-h">必考重点</span></h2>
+
+        <div class="ibox"><strong>📐 类比：</strong>类 = 设计蓝图（房子图纸），对象 = 按蓝图建出来的真实房子。蓝图不占地方，房子占地方。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 180" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">类 与 对象 的关系</text>
+
+            <!-- 类（蓝图） -->
+            <rect x="40" y="44" width="240" height="120" rx="10" fill="#fff" stroke="#2563eb" stroke-width="1"/>
+            <text x="160" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">class Student（蓝图）</text>
+            <line x1="60" y1="70" x2="260" y2="70" stroke="#d1d5db" stroke-width="0.5"/>
+            <text x="56" y="86" font-size="11" fill="#6c757d">private:</text>
+            <text x="66" y="102" font-size="11" fill="#6b7280"> char name[20];</text>
+            <text x="66" y="118" font-size="11" fill="#6b7280"> float score;</text>
+            <text x="56" y="138" font-size="11" fill="#6c757d">public:</text>
+            <text x="66" y="154" font-size="11" fill="#6b7280"> void display();</text>
+
+            <!-- 箭头 -->
+            <line x1="280" y1="80" x2="320" y2="80" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="280" y1="120" x2="320" y2="120" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <text x="300" y="72" text-anchor="middle" font-size="10" fill="#6c757d">实例化</text>
+            <text x="300" y="140" text-anchor="middle" font-size="10" fill="#6c757d">（按图建房）</text>
+
+            <!-- 对象1 -->
+            <rect x="320" y="44" width="160" height="56" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="400" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f6e56" dominant-baseline="central">Student stud1</text>
+            <text x="400" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">name="张三" score=87</text>
+
+            <!-- 对象2 -->
+            <rect x="320" y="108" width="160" height="56" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="400" y="126" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f6e56" dominant-baseline="central">Student stud2</text>
+            <text x="400" y="146" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">name="李四" score=92</text>
+
+            <!-- 标注 -->
+            <text x="520" y="80" font-size="11" fill="#6c757d">占用内存 ✅</text>
+            <text x="520" y="140" font-size="11" fill="#6c757d">占用内存 ✅</text>
+          </svg>
+        </div>
+
+        <h3>标准类定义格式</h3>
+        <pre><span class="k">class</span> <span class="t">Student</span> {      <span class="c">// class 关键字 + 类名</span>
+<span class="k">private:</span>              <span class="c">// 私有：只有类内部能访问</span>
+    <span class="t">char</span> name[<span class="n">20</span>];
+    <span class="t">float</span> score;
+<span class="k">public:</span>               <span class="c">// 公有：类内外都能访问</span>
+    <span class="t">void</span> <span class="f">setdata</span>();
+    <span class="t">void</span> <span class="f">display</span>();
+};  <span class="c">// ⚠️ 这里的分号不能忘记！！！</span></pre>
+
+        <div class="cbox"><strong>⚠️ 新手最容易犯的错：</strong>类定义最后忘了写<code>;</code> 分号！编译报错找不到原因时，先检查这里。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 160" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">三种访问权限对比图</text>
+
+            <!-- private 区域 -->
+            <rect x="40" y="44" width="300" height="100" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="190" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">private 私有</text>
+            <text x="190" y="82" text-anchor="middle" font-size="12" fill="#6c757d">✅ 本类成员函数可访问</text>
+            <text x="190" y="100" text-anchor="middle" font-size="12" fill="#6c757d">❌ 类外代码不可访问</text>
+            <text x="190" y="120" text-anchor="middle" font-size="12" fill="#6c757d">❌ 派生类不可访问</text>
+
+            <!-- protected 区域 -->
+            <rect x="350" y="44" width="300" height="100" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="0.5"/>
+            <text x="500" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">protected 保护</text>
+            <text x="500" y="82" text-anchor="middle" font-size="12" fill="#6c757d">✅ 本类成员函数可访问</text>
+            <text x="500" y="100" text-anchor="middle" font-size="12" fill="#6c757d">❌ 类外代码不可访问</text>
+            <text x="500" y="120" text-anchor="middle" font-size="12" fill="#6c757d">✅ 派生类可访问</text>
+          </svg>
+          <p style="font-size:12px;color:#6c757d;text-align:center;margin-top:6px">画不下了… <strong>public 公有</strong>：所有地方都能访问（✅ ✅ ✅）</p>
+        </div>
+
+        <!-- ===== 新增：类和结构体异同（课件2.2.4） ===== -->
+        <h2>2.2.4 class vs struct 异同 <span class="tag tag-m">常考</span></h2>
+        <div class="concept-pair">
+          <div class="left">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#1e40af">class</h4>
+            <p style="font-size:12px;margin:4px 0">默认访问权限：<strong>private</strong></p>
+            <p style="font-size:12px;margin:4px 0">可以包含成员函数</p>
+            <p style="font-size:12px;margin:4px 0">面向对象编程的主流</p>
+          </div>
+          <div class="right">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#dc2626">struct</h4>
+            <p style="font-size:12px;margin:4px 0">默认访问权限：<strong>public</strong></p>
+            <p style="font-size:12px;margin:4px 0">也可以包含成员函数</p>
+            <p style="font-size:12px;margin:4px 0">C++中用法与 class 基本相同</p>
+          </div>
+        </div>
+        <p style="font-size:13px">课件重点：C++ 中 struct 和 class <strong>用法基本相同</strong>，都可以加函数。唯一的区别是默认权限——struct 默认 public，class 默认 private。</p>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> 例题：完整类定义 + 使用</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Array_max</span> {         <span class="c">// 声明一个"找数组最大值"的类</span>
+<span class="k">public:</span>
+    <span class="t">void</span> <span class="f">set_value</span>();      <span class="c">// 输入10个数</span>
+    <span class="t">void</span> <span class="f">max_value</span>();      <span class="c">// 找最大值</span>
+    <span class="t">void</span> <span class="f">show_value</span>();     <span class="c">// 输出结果</span>
+<span class="k">private:</span>
+    <span class="t">int</span> array[<span class="n">10</span>];          <span class="c">// 存放10个数的数组</span>
+    <span class="t">int</span> max;                 <span class="c">// 存最大值</span>
+};
+
+<span class="c">// ---- 类外定义成员函数 ----</span>
+<span class="t">void</span> Array_max::<span class="f">set_value</span>() {
+    <span class="k">for</span> (<span class="t">int</span> i = <span class="n">0</span>; i < <span class="n">10</span>; i++)
+        <span class="k">cin</span> >> array[i];
+}
+<span class="t">void</span> Array_max::<span class="f">max_value</span>() {
+    max = array[<span class="n">0</span>];           <span class="c">// 先假设第一个最大</span>
+    <span class="k">for</span> (<span class="t">int</span> i = <span class="n">1</span>; i < <span class="n">10</span>; i++)  <span class="c">// 从第二个开始比</span>
+        <span class="k">if</span> (array[i] > max) max = array[i];
+}
+<span class="t">void</span> Array_max::<span class="f">show_value</span>() {
+    <span class="k">cout</span> << <span class="s">"max="</span> << max;
+}
+
+<span class="t">int</span> <span class="f">main</span>() {
+    Array_max arrmax;            <span class="c">// 创建对象</span>
+    arrmax.set_value();          <span class="c">// 调用方法：对象名.函数名</span>
+    arrmax.max_value();
+    arrmax.show_value();
+    <span class="k">return</span> <span class="n">0</span>;
+}</pre>
+          </div>
+        </div>
+
+        <!-- ===== 新增：this指针 ===== -->
+        <h2>2.3 this 指针 <span class="tag tag-h">必考重点</span></h2>
+        <div class="ibox"><strong>一句话：</strong>每个对象都有一个隐含的指针 <code>this</code>，它指向<strong>对象自己</strong>。就像每个人都知道"我自己"是谁一样。当你在成员函数里访问成员变量时，其实都是通过 <code>this-></code> 来访问的。</div>
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> this 指针的隐含用法</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">A</span> {
+    <span class="t">int</span> x, y;
+<span class="k">public:</span>
+    <span class="t">void</span> <span class="f">Setxy</span>(<span class="t">int</span> x, <span class="t">int</span> y) {
+        <span class="c">// this->x 表示"我这个对象的x"，后面的 x 是参数 x</span>
+        <span class="k">this</span>->x = x;    <span class="c">// 相当于 对象.x = 传入的x</span>
+        <span class="k">this</span>->y = y;
+    }
+    A* <span class="f">getThis</span>() { <span class="k">return</span> <span class="k">this</span>; }  <span class="c">// 返回自己的地址</span>
+};</pre>
+            <span class="step">🔢 关键理解：</span>
+            <p>① 当你写 <code>a.Setxy(3, 5)</code>，编译器偷偷传了对象的地址 → 相当于 <code>A::Setxy(&a, 3, 5)</code></p>
+            <p>② 函数内部 <code>this</code> 就是 <code>&a</code></p>
+            <p>③ <code>this->x = x</code> 等价于 <code>a.x = 3</code></p>
+            <p>④ 在成员函数里直接写 <code>x = 3</code> 时，<code>x</code> 前面其实隐含着 <code>this-></code></p>
+          </div>
+        </div>
+
+        <!-- ===== 新增：vector动态数组 ===== -->
+        <h2>2.4 vector 动态数组 <span class="tag tag-l">基础了解</span></h2>
+        <div class="tbox"><strong>💡 实用扩展（课件推荐）：</strong>C++ 真正的灵活可变数组——不用事先定大小，可以随时 push_back 添加元素。</div>
+        <pre><span class="k">#include</span> <span class="s">&lt;vector&gt;</span>           <span class="c">// 使用 vector 需要包含此头文件</span>
+<span class="k">using namespace</span> <span class="t">std</span>;
+
+vector&lt;<span class="t">float</span>&gt; arr;              <span class="c">// 声明一个存 float 的动态数组</span>
+arr.push_back(<span class="n">3.14</span>);             <span class="c">// 在末尾添加 3.14</span>
+arr.push_back(<span class="n">2.71</span>);             <span class="c">// 再添加 2.71</span>
+cout << arr.size();                <span class="c">// 输出数组大小: 2</span>
+cout << arr[<span class="n">0</span>];                  <span class="c">// 用下标访问第一个元素: 3.14</span>
+sort(arr.begin(), arr.end());      <span class="c">// 从小到大排序（需 #include &lt;algorithm&gt;）</span></pre>
+
+        <!-- ===== 新增：多文件组织（课件2.6.2） ===== -->
+        <h2>2.5 类声明和成员函数定义分离 <span class="tag tag-l">基础了解</span></h2>
+        <div class="ibox"><strong>一句话：</strong>实际开发中，通常把类拆成三个文件——头文件(.h)放声明、源文件(.cpp)放实现、另一个源文件放使用代码。这样结构清晰、方便复用。</div>
+        <pre><span class="c">// 文件1: student.h — 类的声明头文件</span>
+<span class="k">class</span> <span class="t">Student</span> {
+<span class="k">private:</span> <span class="t">int</span> num; <span class="t">float</span> score;
+<span class="k">public:</span> <span class="t">void</span> <span class="f">display</span>();
+};
+
+<span class="c">// 文件2: student.cpp — 类的实现文件</span>
+<span class="k">#include</span> <span class="s">"student.h"</span>
+<span class="t">void</span> Student::<span class="f">display</span>() { cout << num << <span class="s">" "</span> << score; }
+
+<span class="c">// 文件3: main.cpp — 类的使用文件</span>
+<span class="k">#include</span> <span class="s">"student.h"</span>
+<span class="t">int</span> <span class="f">main</span>() { Student s; s.display(); }</pre>
+      </div>
+    </section>
+
+    <!-- ===== 第三章 ===== -->
+    <section id="ch3">
+      <div class="sec-card">
+        <h1>📙 第3章 构造/析构/静态/友元</h1>
+
+        <h2>3.1 构造函数 <span class="tag tag-h">必考重点</span></h2>
+
+        <div class="ibox"><strong>👶 生孩子的比喻：</strong>构造函数就像一个自动"初始化"机器。每次创建对象（生孩子），系统就自动调用构造函数（给孩子取名字、打疫苗）。你不写构造函数？系统给你一个啥都不做的默认构造函数（孩子没名字）。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 140" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">构造函数自动执行流程</text>
+
+            <rect x="60" y="44" width="160" height="44" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="140" y="66" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">创建对象</text>
+            <text x="140" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">构造函数被调用</text>
+
+            <line x1="220" y1="66" x2="280" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+            <rect x="280" y="44" width="120" height="44" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="340" y="66" text-anchor="middle" font-size="13" fill="#0f6e56" dominant-baseline="central">初始化数据</text>
+            <text x="340" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">hour=0, minute=0, sec=0</text>
+
+            <line x1="400" y1="66" x2="460" y2="66" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+            <rect x="460" y="44" width="160" height="44" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="540" y="66" text-anchor="middle" font-size="13" fill="#dc2626" dominant-baseline="central">对象可用</text>
+            <text x="540" y="82" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">不再调用构造函数</text>
+
+            <text x="340" y="120" text-anchor="middle" font-size="12" fill="#6c757d">整个过程自动完成，程序员不需要写调用语句</text>
+          </svg>
+        </div>
+
+        <h3>构造函数的几种形式</h3>
+
+        <div class="exbox">
+          <div class="ext">① 无参构造函数（默认）</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Time</span> {
+<span class="k">public:</span>
+    Time() {               <span class="c">// 构造函数名 = 类名，无返回值</span>
+        hour = <span class="n">0</span>;        <span class="c">// 初始化成员</span>
+        minute = <span class="n">0</span>;
+        sec = <span class="n">0</span>;
+    }
+};
+Time t1;                   <span class="c">// 自动调 Time()，t1的hour=0</span></pre>
+          </div>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> ② 带参数的构造函数 + 初始化表</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Box</span> {
+<span class="k">public:</span>
+    <span class="c">// 初始化表写法 :height(h) 相当于在体内写 height = h</span>
+    Box(<span class="t">int</span> h, <span class="t">int</span> w, <span class="t">int</span> len): height(h), width(w), length(len) {}
+<span class="c">// 等价于 ↓</span>
+<span class="c">//  Box(int h, int w, int len) { height = h; width = w; length = len; }</span>
+
+    <span class="t">int</span> <span class="f">volume</span>() { <span class="k">return</span> height * width * length; }
+<span class="k">private:</span>
+    <span class="t">int</span> height, width, length;
+};
+
+Box box1(<span class="n">12</span>, <span class="n">25</span>, <span class="n">30</span>);     <span class="c">// 传参，自动调 Box(12,25,30)</span>
+cout << box1.volume();    <span class="c">// 12×25×30 = 9000</span></pre>
+            <span class="step">🔢 运行过程：</span>
+            <p>① 执行 <code>Box box1(12,25,30);</code> → 在内存中创建了一个 Box 对象</p>
+            <p>② 自动调用构造函数 → 初始化表 <code>: height(12), width(25), length(30)</code> → 三个格子分别存入 12、25、30</p>
+            <p>③ <code>box1.volume()</code> → 计算 12 × 25 × 30 = 9000 ← 输出结果</p>
+          </div>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> ③ 构造函数重载（一个类有多个构造函数）</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Box</span> {
+<span class="k">public:</span>
+    Box() { height=<span class="n">10</span>; width=<span class="n">10</span>; length=<span class="n">10</span>; }           <span class="c">// 无参 → 默认10</span>
+    Box(<span class="t">int</span> h, <span class="t">int</span> w, <span class="t">int</span> len): height(h), width(w), length(len) {}  <span class="c">// 有参</span>
+};
+
+Box box1;                      <span class="c">// 调无参 → 10,10,10</span>
+Box box2(<span class="n">15</span>, <span class="n">30</span>, <span class="n">25</span>);          <span class="c">// 调有参 → 15,30,25</span></pre>
+            <p>一个类可以有多个构造函数，但创建对象时<strong>只执行其中一个</strong>，系统根据参数匹配。</p>
+          </div>
+        </div>
+
+        <h2>3.2 析构函数 <span class="tag tag-h">必考重点</span></h2>
+
+        <div class="ibox"><strong>💀 比喻：</strong>对象"死"的时候自动调用析构函数，做清理工作（比如释放 new 出来的内存）。名字是 <code>~类名</code>，有点像"取关/注销账号"。</div>
+
+        <div class="concept-pair">
+          <div class="left">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#1e40af">构造函数</h4>
+            <p style="font-size:12px;margin:0">同名，无返回值<br>可重载<br>创建对象时自动调用</p>
+          </div>
+          <div class="right">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#dc2626">析构函数</h4>
+            <p style="font-size:12px;margin:0">~同名，无返回值<br><strong>不能重载</strong>（一个类只有一个）<br>对象销毁时自动调用</p>
+          </div>
+        </div>
+
+        <div class="tbox"><strong>📋 调用顺序口诀：</strong>先构造的后析构，后构造的先析构（像叠碗一样，后叠上去的先拿下来）。</div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 例题：构造函数 + 析构函数完整示例</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Student</span> {
+<span class="k">public:</span>
+    Student(<span class="t">int</span> n, <span class="t">string</span> nam, <span class="t">char</span> s) {     <span class="c">// 构造函数</span>
+        num = n;  name = <span class="k">new</span> <span class="t">string</span>(nam);  sex = s;
+        cout << <span class="s">"Constructor called."</span> << endl;
+    }
+    ~Student() {                                    <span class="c">// 析构函数</span>
+        <span class="k">delete</span> name;      <span class="c">// 清理 new 出来的内存</span>
+        cout << <span class="s">"Destructor called."</span> << endl;
+    }
+<span class="k">private:</span>
+    <span class="t">int</span> num;  <span class="t">string</span> *name;  <span class="t">char</span> sex;
+};
+
+<span class="t">int</span> <span class="f">main</span>() {
+    Student *s1 = <span class="k">new</span> Student(<span class="n">10010</span>, <span class="s">"Wang"</span>, <span class="s">'f'</span>);
+    <span class="k">delete</span> s1;              <span class="c">// → 调用析构函数 ❗</span>
+
+    Student s2(<span class="n">10011</span>, <span class="s">"Zhang"</span>, <span class="s">'m'</span>);
+    <span class="c">// main 结束 → 自动调 s2 的析构函数</span>
+}</pre>
+            <span class="step">🔢 输出顺序：</span>
+            <p>Constructor called. （s1 创建）→ Destructor called.（delete s1）→ Constructor called.（s2 创建）→ Destructor called.（main 结束，s2 销毁）</p>
+          </div>
+        </div>
+
+        <!-- 静态成员 -->
+        <h2>3.3 静态成员 <span class="tag tag-m">常考</span></h2>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 140" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">静态成员：被所有对象共享</text>
+
+            <rect x="40" y="44" width="600" height="36" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="0.5"/>
+            <text x="150" y="66" text-anchor="middle" font-size="13" fill="#92400e" dominant-baseline="central">static int count  ← 这个被所有对象共用</text>
+            <text x="530" y="66" text-anchor="middle" font-size="11" fill="#6c757d" dominant-baseline="central">int Box::count=0  （类外定义）</text>
+
+            <rect x="80" y="96" width="120" height="32" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="140" y="118" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">对象1 → count++</text>
+
+            <rect x="260" y="96" width="120" height="32" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="320" y="118" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">对象2 → count++</text>
+
+            <rect x="440" y="96" width="120" height="32" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="500" y="118" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">对象3 → count++</text>
+
+            <text x="320" y="86" text-anchor="middle" font-size="11" fill="#dc2626">count = 3 （三个对象共享同一个计数器）</text>
+          </svg>
+        </div>
+
+        <div class="cbox"><strong>⚠ 关键：</strong>静态数据成员必须在<strong>类外定义和初始化</strong>！格式：<code>int 类名::静态成员 = 值;</code></div>
+
+        <!-- ===== 新增：const保护 ===== -->
+        <h2>3.4 const 保护共用数据 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>用 const 声明"只读"的数据或函数，告诉编译器"这个不能改，改了报错"。</div>
+        <div class="tw">
+        <table>
+          <tr><th>概念</th><th>写法</th><th>说明</th></tr>
+          <tr><td>常对象</td><td><code>const Time t1(10,20,30);</code></td><td>对象的所有成员都不能修改，只能调用常成员函数</td></tr>
+          <tr><td>常数据成员</td><td><code>const int hour;</code>（在类内声明）</td><td>只能用初始化表初始化，不能赋值</td></tr>
+          <tr><td>常成员函数</td><td><code>void show() const { ... }</code></td><td>函数中不能修改任何数据成员</td></tr>
+          <tr><td>常引用</td><td><code>const int &a = i;</code></td><td>通过引用不能改值（但 i 本身可改）</td></tr>
+          <tr><td>常指针</td><td><code>const int *p = &i;</code></td><td>不能通过 p 修改 i 的值</td></tr>
+        </table>
+        </div>
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> 常成员函数示例</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Time</span> {
+<span class="k">public:</span>
+    Time(<span class="t">int</span> h, <span class="t">int</span> m, <span class="t">int</span> s): hour(h), minute(m), sec(s) {}
+    <span class="t">void</span> <span class="f">show_time</span>() <span class="k">const</span> {     <span class="c">// const 放在函数后面，承诺不改数据</span>
+        cout << hour << <span class="s">":"</span> << minute << <span class="s">":"</span> << sec;
+    }
+<span class="k">private:</span>
+    <span class="t">int</span> hour, minute, sec;
+};
+
+<span class="k">const</span> Time t1(<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>);   <span class="c">// 常对象</span>
+t1.show_time();                  <span class="c">// ✅ 常对象只能调用常成员函数</span>
+<span class="c">// t1.hour = 12;               ❌ 常对象的成员不能修改</span></pre>
+          </div>
+        </div>
+
+        <!-- ===== 新增：复制构造函数 ===== -->
+        <h2>3.5 复制构造函数 <span class="tag tag-h">必考重点</span></h2>
+        <div class="ibox"><strong>一句话：</strong>用一个已存在的对象来"拷贝"创建一个新对象。格式：<code>类名(const 类名 &对象)</code>。当你写 <code>Box box2 = box1;</code> 时自动调用。</div>
+        <pre><span class="k">class</span> <span class="t">Box</span> {
+<span class="k">public:</span>
+    Box(<span class="t">int</span> h, <span class="t">int</span> w, <span class="t">int</span> l): height(h), width(w), length(l) {}
+    <span class="c">// 复制构造函数：参数必须是本类对象的常引用</span>
+    Box(<span class="k">const</span> Box &b): height(b.height), width(b.width), length(b.length) {
+        cout << <span class="s">"Copy constructor called"</span> << endl;
+    }
+<span class="k">private:</span>
+    <span class="t">int</span> height, width, length;
+};
+
+Box box1(<span class="n">12</span>, <span class="n">25</span>, <span class="n">30</span>);
+Box box2 = box1;     <span class="c">// → 调用复制构造函数，box2 跟 box1 一样</span>
+Box box3(box1);      <span class="c">// → 也调用复制构造函数</span></pre>
+        <div class="cbox"><strong>⚠ 什么时候自动调复制构造函数？</strong>① 用已存在的对象初始化新对象；② 函数参数是对象，传值调用时；③ 函数返回一个对象时。<br>
+        <strong>如果你不写复制构造函数：</strong>系统自动生成一个，逐个成员复制（浅拷贝）。如果成员里有指针（new出来的），浅拷贝会导致两个对象指向同一块内存，析构时会出 bug！</div>
+
+        <!-- ===== 新增：friend 友元类 ===== -->
+        <h2>3.6 友元类 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>在 A 类里写 <code>friend class B;</code>，那么 B 类中的所有成员函数都可以访问 A 类的私有成员。就像你给了 B 一把"万能钥匙"。</div>
+        <pre><span class="k">class</span> <span class="t">A</span> {
+<span class="k">private:</span>
+    <span class="t">int</span> x;
+<span class="k">public:</span>
+    A(): x(<span class="n">3</span>) {}
+    <span class="k">friend class</span> <span class="t">B</span>;     <span class="c">// B 是我的朋友，B 的所有函数都能访问我的私有成员</span>
+};
+
+<span class="k">class</span> <span class="t">B</span> {
+<span class="k">public:</span>
+    <span class="t">void</span> <span class="f">disp</span>(A &a) { cout << a.x; }  <span class="c">// ✅ 可以访问 A 的私有 x</span>
+};</pre>
+        <div class="cbox"><strong>⚠ 友元的两条重要性质（必考判断题）：</strong>① 友元关系是<strong>单向</strong>的（A 声明 B 是朋友 ≠ B 也把 A 当朋友）；② 友元关系<strong>不能传递</strong>（A 是 B 的朋友，B 是 C 的朋友 ≠ A 是 C 的朋友）</div>
+
+        <!-- ===== 新增：对象数组 ===== -->
+        <h2>3.7 对象数组 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>数组里的每个元素都是一个对象。就像 <code>int a[5]</code> 是 5 个整数，<code>Box box[3]</code> 是 3 个 Box 对象。</div>
+        <pre><span class="k">class</span> <span class="t">Student</span> {
+<span class="k">public:</span>
+    Student(): num(<span class="n">0</span>), score(<span class="n">0</span>) {}        <span class="c">// 无参构造函数（对象数组需要）</span>
+    Student(<span class="t">int</span> n, <span class="t">float</span> s): num(n), score(s) {}
+<span class="k">private:</span>
+    <span class="t">int</span> num; <span class="t">float</span> score;
+};
+
+Student stud[<span class="n">3</span>] = {                    <span class="c">// 对象数组，3个学生</span>
+    Student(<span class="n">1001</span>, <span class="n">87.5</span>),
+    Student(<span class="n">1002</span>, <span class="n">79</span>),
+    Student(<span class="n">1005</span>, <span class="n">98</span>)
+};
+cout << stud[<span class="n">0</span>];                        <span class="c">// 像普通数组一样用下标访问</span></pre>
+        <div class="cbox"><strong>⚠ 注意：</strong>对象数组要求类必须有<strong>无参构造函数</strong>（或全部提供默认值），因为创建数组时会先为每个元素调用无参构造函数。</div>
+
+        <!-- ===== 新增：类模板详细 ===== -->
+        <h2>3.8 类模板 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>和函数模板类似，T 是"万能类型"。比如你要写一个"比较大小"的类，可以比 int、float、char……不同数据类型，用类模板只写一次。</div>
+        <pre><span class="k">template</span> &lt;<span class="k">class</span> T&gt;                <span class="c">// T 是虚拟类型参数</span>
+<span class="k">class</span> <span class="t">Compare</span> {
+<span class="k">private:</span>
+    T x, y;
+<span class="k">public:</span>
+    Compare(T a, T b): x(a), y(b) {}
+    T <span class="f">max</span>() { <span class="k">return</span> (x > y) ? x : y; }
+    T <span class="f">min</span>() { <span class="k">return</span> (x < y) ? x : y; }
+};
+
+<span class="c">// 使用：指定实际类型</span>
+Compare&lt;<span class="t">int</span>&gt; cmp1(<span class="n">3</span>, <span class="n">7</span>);
+cout << cmp1.max();         <span class="c">// 7</span>
+
+Compare&lt;<span class="t">float</span>&gt; cmp2(<span class="n">45.78</span>, <span class="n">93.6</span>);
+Compare&lt;<span class="t">char</span>&gt; cmp3(<span class="s">'a'</span>, <span class="s">'A'</span>);</pre>
+        <div class="tbox"><strong>💡 类模板 vs 函数模板：</strong>函数模板是函数的抽象，类模板是类的抽象。定义对象时用 <code>类模板名&lt;实际类型&gt; 对象名;</code> 的格式。</div>
+      </div>
+    </section>
+
+    <!-- ===== 第四章 ===== -->
+    <section id="ch4">
+      <div class="sec-card">
+        <h1>📕 第4章 运算符重载</h1>
+
+        <div class="ibox"><strong>一句话：</strong>让 +、-、++ 这些运算符也能用在你自己定义的类上。比如 "复数" 类型，需要能 <code>c1 + c2</code> 吧？编译器本来不知道，你用 operator+ 告诉它怎么做。</div>
+
+        <h2>不能重载的 5 个运算符 <span class="tag tag-h">必考</span></h2>
+        <div class="cards">
+          <div class="card"><h4>.</h4><p style="font-size:12px">成员访问运算符</p></div>
+          <div class="card"><h4>.*</h4><p style="font-size:12px">成员指针运算符</p></div>
+          <div class="card"><h4>::</h4><p style="font-size:12px">作用域运算符</p></div>
+          <div class="card"><h4>sizeof</h4><p style="font-size:12px">长度运算符</p></div>
+          <div class="card"><h4>?:</h4><p style="font-size:12px">条件运算符（三目）</p></div>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 例题：重载 + 实现复数相加（成员函数形式）</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Complex</span> {
+<span class="k">public:</span>
+    Complex(<span class="t">double</span> r, <span class="t">double</span> i): real(r), imag(i) {}
+    Complex <span class="k">operator</span>+(Complex &c2) {          <span class="c">// 重载 + 号</span>
+        <span class="k">return</span> Complex(real + c2.real, imag + c2.imag);
+    }
+<span class="k">private:</span>
+    <span class="t">double</span> real, imag;
+};
+
+<span class="c">// 使用：</span>
+Complex c1(<span class="n">3</span>, <span class="n">4</span>), c2(<span class="n">5</span>, <span class="n">-10</span>), c3;
+c3 = c1 + c2;      <span class="c">// 编译器解释为 c1.operator+(c2)</span>
+<span class="c">// 相当于 c3.real = 3+5 = 8, c3.imag = 4+(-10) = -6</span></pre>
+            <span class="step">🔢 逐行拆解：</span>
+            <p>① <code>c1 + c2</code> 被系统翻译为 <code>c1.operator+(c2)</code>（成员函数形式，c1 是调用者，c2 是参数）</p>
+            <p>② 进入函数：<code>return Complex(real + c2.real, imag + c2.imag);</code></p>
+            <p>③ <code>real</code> 是谁？就是 c1 的 real（因为 c1 调用的这个函数，函数的 real 就是 c1 的成员）</p>
+            <p>④ 计算：<code>real(3) + c2.real(5) = 8</code>，<code>imag(4) + c2.imag(-10) = -6</code></p>
+            <p>⑤ 返回新创建的 Complex(8, -6)，赋值给 c3</p>
+            <p style="color:#2563eb;font-weight:600">结果：c3 = (8, -6i) ✅</p>
+          </div>
+        </div>
+
+        <!-- 前置++后置++ -->
+        <h2>前置 ++ 与 后置 ++ <span class="tag tag-h">必考</span></h2>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 160" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">前置++ 与 后置++ 对比</text>
+
+            <rect x="40" y="44" width="280" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="180" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">前置++：先加后用</text>
+            <text x="180" y="84" text-anchor="middle" font-size="12" fill="#374151">++a</text>
+            <text x="180" y="102" text-anchor="middle" font-size="12" fill="#6c757d">① a = a + 1  </text>
+            <text x="180" y="120" text-anchor="middle" font-size="12" fill="#6c757d">② 用更新后的 a 参与运算</text>
+
+            <rect x="360" y="44" width="280" height="100" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="500" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">后置++：先用后加</text>
+            <text x="500" y="84" text-anchor="middle" font-size="12" fill="#374151">a++</text>
+            <text x="500" y="102" text-anchor="middle" font-size="12" fill="#6c757d">① 用 a 的当前值参与运算</text>
+            <text x="500" y="120" text-anchor="middle" font-size="12" fill="#6c757d">② a = a + 1</text>
+          </svg>
+        </div>
+
+        <div class="cbox">
+          <strong>⚠ 区分写法（高频考点）：</strong><br>
+          重载前置++：<code>Time operator++();</code> —— 无参数<br>
+          重载后置++：<code>Time operator++(int);</code> —— 一个 int 参数（不传值，仅用于区分）<br>
+          后置++的实现技巧：先保存当前状态（<code>Time temp = *this;</code>），然后调前置++（<code>++(*this);</code>），最后返回保存的旧值（<code>return temp;</code>）。
+        </div>
+
+        <!-- ===== 新增：流运算符重载 ===== -->
+        <h2>流插入 << 和流提取 >> 重载 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>你想用 <code>cout << 你的对象</code> 和 <code>cin >> 你的对象</code> 来输入输出，就得重载 << 和 >>。它们<strong>必须重载为友元函数</strong>（因为第一个参数是 ostream& 或 istream&，不是你的类类型）。</div>
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> 重载 << 和 >> 完整示例（例4.7/4.8）</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Complex</span> {
+    <span class="k">friend</span> ostream& <span class="k">operator</span><<(ostream &out, Complex &c);  <span class="c">// 声明为友元</span>
+    <span class="k">friend</span> istream& <span class="k">operator</span>>>(istream &in, Complex &c);
+<span class="k">private:</span>
+    <span class="t">double</span> real, imag;
+};
+
+<span class="c">// 输出：必须返回 ostream& 才能连续输出（如 cout << a << b）</span>
+ostream& <span class="k">operator</span><<(ostream &out, Complex &c) {
+    out << <span class="s">"("</span> << c.real << <span class="s">","</span> << c.imag << <span class="s">"i)"</span>;
+    <span class="k">return</span> out;
+}
+<span class="c">// 输入</span>
+istream& <span class="k">operator</span>>>(istream &in, Complex &c) {
+    cout << <span class="s">"输入实部和虚部:"</span>;
+    in >> c.real >> c.imag;
+    <span class="k">return</span> in;
+}
+
+<span class="c">// 使用：</span>
+Complex c1(<span class="n">3</span>, <span class="n">4</span>);
+cout << c1;              <span class="c">// 输出 (3,4i)</span>
+cin >> c1;               <span class="c">// 输入实部和虚部</span></pre>
+            <span class="step">🔢 关键点：</span>
+            <p>① 必须返回 <code>ostream&</code>（引用）而不是 <code>ostream</code>（值）—— 因为 <code>ostream</code> 不允许复制</p>
+            <p>② 必须返回 <code>return out;</code> — 才能实现 <code>cout << a << b</code> 链式调用（第一次返回的 out 接着给第二次用）</p>
+            <p>③ 为什么必须是友元？因为第一个参数是 <code>ostream&</code>，不是你的类，没法写成成员函数。</p>
+          </div>
+        </div>
+
+        <!-- ===== 新增：重载关系运算符比较字符串 ===== -->
+        <h2>String 类重载关系运算符 <span class="tag tag-m">常考</span>（例4.4）</h2>
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-m">常考</span> 例4.4 重载 > < == 比较两个字符串</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">String</span> {
+    <span class="k">friend</span> <span class="t">bool</span> <span class="k">operator</span>>(String &s1, String &s2);
+    <span class="k">friend</span> <span class="t">bool</span> <span class="k">operator</span><(String &s1, String &s2);
+    <span class="k">friend</span> <span class="t">bool</span> <span class="k">operator</span>==(String &s1, String &s2);
+<span class="k">private:</span>
+    <span class="t">char</span> *p;
+<span class="k">public:</span>
+    String(<span class="t">char</span> *str): p(str) {}
+};
+
+<span class="t">bool</span> <span class="k">operator</span>>(String &s1, String &s2) {
+    <span class="k">return</span> strcmp(s1.p, s2.p) > <span class="n">0</span>;  <span class="c">// 用 strcmp 比较 C 风格字符串</span>
+}
+<span class="c">// 使用：</span>
+String s1(<span class="s">"Hello"</span>), s2(<span class="s">"Book"</span>);
+cout << (s1 > s2);   <span class="c">// 1 (true)，因为 'H' > 'B'</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第五章 ===== -->
+    <section id="ch5">
+      <div class="sec-card">
+        <h1>📘 第5章 继承与派生</h1>
+
+        <div class="ibox"><strong>🧬 比喻：</strong>儿子继承父亲的财产。派生类（儿子）继承基类（父亲）的全部成员，还能自己新增。儿子用父亲的东西不用重新买，但也能买自己的新东西。</div>
+
+        <!-- ===== 新增：三种继承方式对比 ===== -->
+        <h2>三种继承方式对比 <span class="tag tag-h">必考重点</span></h2>
+        <div class="ibox"><strong>核心：</strong>继承方式决定了基类成员在派生类中的访问权限。继承方式只有三种：public、private、protected。</div>
+        <div class="tw">
+        <table>
+          <tr><th>继承方式</th><th>基类 public 成员<br>在派生类中变成</th><th>基类 protected 成员<br>在派生类中变成</th><th>基类 private 成员<br>在派生类中</th></tr>
+          <tr><td><code>public 继承</code></td><td>public</td><td>protected</td><td>不可访问</td></tr>
+          <tr><td><code>protected 继承</code></td><td>protected</td><td>protected</td><td>不可访问</td></tr>
+          <tr><td><code>private 继承</code></td><td>private</td><td>private</td><td>不可访问</td></tr>
+        </table>
+        </div>
+        <div class="tbox"><strong>💡 记法：</strong>不管用什么方式继承，基类的 private 成员在派生类中永远不可直接访问。public 继承最常用——保持"is-a"关系（学生是一种人）。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 180" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">继承层次图——多层派生</text>
+
+            <!-- 基类 -->
+            <rect x="220" y="40" width="240" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="340" y="63" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">Student 基类：num, name, display()</text>
+
+            <line x1="340" y1="76" x2="340" y2="92" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <text x="355" y="86" font-size="11" fill="#6c757d">public 继承</text>
+
+            <!-- 派生类1 -->
+            <rect x="220" y="94" width="240" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="340" y="117" text-anchor="middle" font-size="13" fill="#0f6e56" dominant-baseline="central">Student1: num,name,display(), +age</text>
+
+            <line x1="340" y1="130" x2="340" y2="146" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <text x="355" y="140" font-size="11" fill="#6c757d">public 继承</text>
+
+            <!-- 派生类2 -->
+            <rect x="220" y="148" width="240" height="36" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="340" y="171" text-anchor="middle" font-size="13" fill="#dc2626" dominant-baseline="central">Student2: ...age +score</text>
+          </svg>
+        </div>
+
+        <h3>派生类构造函数执行顺序 <span class="tag tag-h">必考</span></h3>
+
+        <div class="guide-step">
+          <div class="snum">1</div>
+          <div class="scnt"><strong>先调基类构造函数</strong> — 先初始化从父亲那里继承来的东西</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">2</div>
+          <div class="scnt"><strong>再调子对象构造函数</strong> — 类里如果有其他类的对象成员，初始化它们</div>
+        </div>
+        <div class="guide-step">
+          <div class="snum">3</div>
+          <div class="scnt"><strong>最后执行派生类构造函数体</strong> — 初始化自己新增的成员</div>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 例题：派生类构造函数写法</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Student1</span>: <span class="k">public</span> <span class="t">Student</span> {     <span class="c">// 继承 Student</span>
+<span class="k">private:</span>
+    <span class="t">int</span> age;
+    <span class="t">string</span> addr;
+<span class="k">public:</span>
+    <span class="c">// 总参数表: 先用一部分参数调基类构造函数，剩下的初始化自己的成员</span>
+    Student1(<span class="t">int</span> n, <span class="t">string</span> nam, <span class="t">int</span> a, <span class="t">string</span> ad):
+        Student(n, nam),          <span class="c">// 调基类构造函数</span>
+        age(a),  addr(ad)         <span class="c">// 初始化自己的成员</span>
+    { }
+};
+
+<span class="c">// 多层派生时写的规则：只调用直接基类</span>
+Student2(<span class="t">int</span> n, <span class="t">string</span> nam, <span class="t">int</span> a, <span class="t">int</span> s):
+    Student1(n, nam, a), score(s) { }         <span class="c">// ✅ 正确（只调直接基类 Student1）</span>
+<span class="c">// Student2(n, nam, a, s): Student(n, nam), Student1(n, nam, a), score(s) {}  ❌ 错误</span></pre>
+          </div>
+        </div>
+
+        <!-- ===== 新增：派生类构造函数5种特殊情况（课件5.5.4） ===== -->
+        <h2>派生类构造函数的5种特殊情况 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>核心原则：</strong>写不写基类构造函数，取决于基类有没有<strong>带参数的构造函数</strong>。</div>
+        <div class="guide-step"><div class="snum">1</div><div class="scnt"><strong>基类没有构造函数/有无参构造函数</strong> → 派生类可以不写基类构造函数。调用时系统自动调基类默认构造函数。</div></div>
+        <div class="guide-step"><div class="snum">2</div><div class="scnt"><strong>基类有带参构造函数</strong> → 派生类<strong>必须</strong>定义构造函数，并在初始化表中列出基类构造函数及参数。</div></div>
+        <div class="guide-step"><div class="snum">3</div><div class="scnt"><strong>不需要初始化派生类新增成员</strong> → 派生类构造函数体可以为空（只写初始化表）。</div></div>
+        <div class="guide-step"><div class="snum">4</div><div class="scnt"><strong>基类既有无参又有有参构造函数</strong> → 派生类可以包含也可以不包含基类构造函数。</div></div>
+        <div class="guide-step"><div class="snum">5</div><div class="scnt"><strong>基类和子对象都没有带参构造函数</strong> → 可以不定义派生类构造函数。</div></div>
+
+        <!-- ===== 新增：派生类析构函数（课件5.5.5） ===== -->
+        <h2>派生类的析构函数 <span class="tag tag-m">常考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>派生类不能继承基类的析构函数。撤销派生类对象时，执行顺序<strong>与构造函数相反</strong>。</div>
+        <div class="guide-step"><div class="snum">1</div><div class="scnt">先执行<strong>派生类自身的析构函数</strong>，清理新增成员</div></div>
+        <div class="guide-step"><div class="snum">2</div><div class="scnt">再调用<strong>子对象的析构函数</strong>，清理子对象</div></div>
+        <div class="guide-step"><div class="snum">3</div><div class="scnt">最后调用<strong>基类的析构函数</strong>，清理基类成员</div></div>
+        <pre><span class="c">// 构造函数顺序: B() → C()</span>
+<span class="c">// 析构函数顺序: ~C() → ~B()</span>
+<span class="k">class</span> <span class="t">B</span> {
+    B() { cout << <span class="s">"B构造"</span>; }
+    ~B() { cout << <span class="s">"B析构"</span>; }
+};
+<span class="k">class</span> <span class="t">C</span>: <span class="k">public</span> <span class="t">B</span> {
+    C() { cout << <span class="s">"C构造"</span>; }
+    ~C() { cout << <span class="s">"C析构"</span>; }
+};
+<span class="c">// C obj; 输出: B构造 C构造 C析构 B析构</span></pre>
+
+        <!-- 二义性 -->
+        <h2>多重继承的二义性 <span class="tag tag-h">必考</span></h2>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 180" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">菱形继承：同一份数据被继承两次</text>
+
+            <!-- 顶层基类 N -->
+            <rect x="240" y="40" width="200" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="340" y="63" text-anchor="middle" font-size="13" fill="#1e40af" dominant-baseline="central">class N { int a; }</text>
+
+            <line x1="290" y1="76" x2="240" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <text x="250" y="92" font-size="11" fill="#6c757d">virtual</text>
+            <line x1="390" y1="76" x2="440" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <text x="430" y="92" font-size="11" fill="#6c757d">virtual</text>
+
+            <!-- 中间层 A B -->
+            <rect x="160" y="104" width="160" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="240" y="127" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">class A: virtual public N</text>
+
+            <rect x="360" y="104" width="160" height="36" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="440" y="127" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">class B: virtual public N</text>
+
+            <line x1="280" y1="140" x2="320" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+            <line x1="400" y1="140" x2="360" y2="160" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+            <!-- 底层 -->
+            <rect x="240" y="158" width="200" height="36" rx="8" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="340" y="181" text-anchor="middle" font-size="13" fill="#dc2626" dominant-baseline="central">class C: public A, public B</text>
+
+            <text x="600" y="178" font-size="11" fill="#dc2626">✅ C中只有一份 N::a</text>
+          </svg>
+        </div>
+
+        <div class="tbox"><strong>💡 虚基类口诀：</strong>第一级继承就加 virtual，最终派生类负责初始化虚基类。这样菱形继承的顶层基类只保留一个副本。</div>
+
+        <!-- ===== 新增：多重继承示例 ===== -->
+        <h2>多重继承完整示例 <span class="tag tag-h">必考</span></h2>
+        <div class="ibox"><strong>一句话：</strong>一个派生类有<strong>多个</strong>基类。比如一个"研究生"同时是"学生"和"教师"。</div>
+        <div class="exbox">
+          <div class="ext">例5.8 多重继承——研究生类继承教师+学生</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Teacher</span> {
+<span class="k">protected:</span>  <span class="t">string</span> name; <span class="t">int</span> age; <span class="t">string</span> title;
+};
+<span class="k">class</span> <span class="t">Student</span> {
+<span class="k">protected:</span>  <span class="t">string</span> name1; <span class="t">char</span> sex; <span class="t">float</span> score;
+};
+
+<span class="c">// 多重继承：Graduate 同时继承 Teacher 和 Student</span>
+<span class="k">class</span> <span class="t">Graduate</span>: <span class="k">public</span> <span class="t">Teacher</span>, <span class="k">public</span> <span class="t">Student</span> {
+    <span class="t">float</span> wage;
+<span class="k">public:</span>
+    <span class="c">// 构造：初始化表中列出所有基类的构造函数</span>
+    Graduate(<span class="t">string</span> nam, <span class="t">int</span> a, <span class="t">char</span> s, <span class="t">string</span> t, <span class="t">float</span> sco, <span class="t">float</span> w):
+        Teacher(nam, a, t), Student(nam, s, sco), wage(w) {}
+};</pre>
+            <span class="step">🔢 构造函数调用顺序：</span>
+            <p>按照声明派生类时基类的<strong>出现顺序</strong>——先 Teacher 后 Student。所以：Teacher() → Student() → Graduate()</p>
+          </div>
+        </div>
+
+        <!-- ===== 新增：虚基类初始化 ===== -->
+        <h2>虚基类的初始化 <span class="tag tag-h">必考</span></h2>
+        <div class="cbox"><strong>⚠ 关键规则：</strong>如果在虚基类中定义了带参数的构造函数，<strong>所有直接和间接的派生类</strong>都要通过构造函数的初始化表对虚基类进行初始化。但编译系统只执行<strong>最顶层的虚基类构造函数一次</strong>，其它的忽略。</div>
+        <pre><span class="k">class</span> <span class="t">A</span> { <span class="k">public:</span> A(<span class="t">int</span> k) { } };
+<span class="k">class</span> <span class="t">B</span>: <span class="k">virtual</span> <span class="k">public</span> <span class="t">A</span> { <span class="k">public:</span> B(<span class="t">int</span> n): A(n) { } };
+<span class="k">class</span> <span class="t">C</span>: <span class="k">virtual</span> <span class="k">public</span> <span class="t">A</span> { <span class="k">public:</span> C(<span class="t">int</span> n): A(n) { } };
+
+<span class="c">// 最终派生类 D 必须负责初始化虚基类 A</span>
+<span class="k">class</span> <span class="t">D</span>: <span class="k">public</span> <span class="t">B</span>, <span class="k">public</span> <span class="t">C</span> {
+<span class="k">public:</span>
+    D(<span class="t">int</span> n): A(n), B(n), C(n) { }    <span class="c">// ✅ 正确写法</span>
+};</pre>
+
+        <!-- ===== 新增：继承和组合（课件5.8，自学带过） ===== -->
+        <h2>继承和组合 <span class="tag tag-l">基础了解（自学）</span></h2>
+        <div class="ibox"><strong>一句话：</strong><strong>继承</strong>是"is-a"关系（学生是一种人），<strong>组合</strong>是"has-a"关系（班级里有学生）。课件5.8-5.9为自学内容，简单了解概念即可。</div>
+        <pre><span class="c">// 继承：学生 is-a 人（学生从人派生）</span>
+<span class="k">class</span> <span class="t">Student</span>: <span class="k">public</span> <span class="t">Person</span> { };
+
+<span class="c">// 组合：班级 has-a 学生（班级里包含学生对象）</span>
+<span class="k">class</span> <span class="t">Class</span> {
+    Student stud[<span class="n">50</span>];   <span class="c">// 组合关系</span>
+};</pre>
+      </div>
+    </section>
+
+    <!-- ===== 第六章 ===== -->
+    <section id="ch6">
+      <div class="sec-card">
+        <h1>📗 第6章 多态性与虚函数</h1>
+
+        <div class="ibox"><strong>🎭 一句话：</strong>同一个命令（函数调用），不同对象做出不同反应。用基类指针指向不同派生类对象，执行不同版本的函数。</div>
+
+        <!-- ===== 新增：静态关联 vs 动态关联 ===== -->
+        <h2>静态关联 vs 动态关联 <span class="tag tag-m">常考</span></h2>
+        <div class="concept-pair">
+          <div class="left">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#1e40af">静态关联（编译时确定）</h4>
+            <p style="font-size:12px;margin:0">函数重载、<br>用对象名调用虚函数<br>编译时就确定调用哪个函数<br>速度快</p>
+          </div>
+          <div class="right">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#dc2626">动态关联（运行时确定）</h4>
+            <p style="font-size:12px;margin:0">用基类<strong>指针</strong>或<strong>引用</strong><br>调用虚函数<br>运行时根据对象的实际类型确定<br>灵活性高</p>
+          </div>
+        </div>
+
+        <h2>什么情况下应当声明虚函数 <span class="tag tag-m">常考</span></h2>
+        <div class="guide-step"><div class="snum">1</div><div class="scnt">首先看这个成员函数所在的类是否<strong>会作为基类</strong>。如果不作为基类，不需要虚函数。</div></div>
+        <div class="guide-step"><div class="snum">2</div><div class="scnt">派生类中是否<strong>需要重新定义</strong>这个函数的功能。如果派生类和基类功能一样，不需要虚函数。</div></div>
+        <div class="guide-step"><div class="snum">3</div><div class="scnt">是否需要通过<strong>基类指针/引用</strong>来调用。如果不通过基类指针，用普通函数即可。</div></div>
+        <div class="tbox"><strong>💡 注意：</strong>只能将类的<strong>成员函数</strong>声明为虚函数（普通函数不行）。基类的虚函数体可以是空的，具体功能留给派生类去添加。</div>
+
+        <div class="chart-wrap">
+          <svg viewBox="0 0 680 200" width="100%">
+            <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">虚函数工作原理：基类指针→动态绑定</text>
+
+            <rect x="240" y="40" width="200" height="32" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="340" y="60" text-anchor="middle" font-size="12" fill="#1e40af" dominant-baseline="central">Base *p;  // 基类指针</text>
+
+            <line x1="340" y1="72" x2="340" y2="90" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+
+            <rect x="100" y="96" width="480" height="16" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="0.3"/>
+            <text x="100" y="108" font-size="11" fill="#dc2626" dominant-baseline="central">p->display();  // 同一个调用语句，指针指向谁就调谁的版本</text>
+
+            <!-- 三种情况 -->
+            <line x1="160" y1="118" x2="100" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+            <line x1="340" y1="118" x2="340" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+            <line x1="520" y1="118" x2="580" y2="136" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4)"/>
+
+            <rect x="30" y="140" width="140" height="28" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="0.5"/>
+            <text x="100" y="159" text-anchor="middle" font-size="11" fill="#1e40af" dominant-baseline="central">p=&b0 → 调Base版本</text>
+
+            <rect x="270" y="140" width="140" height="28" rx="6" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+            <text x="340" y="159" text-anchor="middle" font-size="11" fill="#0f6e56" dominant-baseline="central">p=&b1 → 调B1版本</text>
+
+            <rect x="510" y="140" width="140" height="28" rx="6" fill="#fce7e7" stroke="#ef4444" stroke-width="0.5"/>
+            <text x="580" y="159" text-anchor="middle" font-size="11" fill="#dc2626" dominant-baseline="central">p=&d1 → 调D1版本</text>
+
+            <text x="340" y="190" text-anchor="middle" font-size="11" fill="#6c757d">不加 virtual → 全程调 Base 版本；加 virtual → 动态关联，指向谁就调谁</text>
+          </svg>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 例题：虚函数完整示例</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Base</span> {
+<span class="k">public:</span>
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">display</span>() { cout << <span class="s">"Base::display()"</span> << endl; }
+};
+<span class="k">class</span> <span class="t">B1</span>: <span class="k">public</span> <span class="t">Base</span> {
+<span class="k">public:</span>
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">display</span>() { cout << <span class="s">"B1::display()"</span> << endl; }  <span class="c">// 自动成为虚函数</span>
+};
+<span class="k">class</span> <span class="t">D1</span>: <span class="k">public</span> <span class="t">B1</span> {
+<span class="k">public:</span>
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">display</span>() { cout << <span class="s">"D1::display()"</span> << endl; }
+};
+
+<span class="c">// 👇 核心：用一个函数，传不同的对象指针</span>
+<span class="t">void</span> <span class="f">fun</span>(Base *ptr) {
+    ptr->display();     <span class="c">// 动态关联！运行的时候才知道调哪个</span>
+}
+
+<span class="t">int</span> <span class="f">main</span>() {
+    Base b0;  B1 b1;  D1 d1;
+    fun(&b0);    <span class="c">// 输出: Base::display()</span>
+    fun(&b1);    <span class="c">// 输出: B1::display()</span>
+    fun(&d1);    <span class="c">// 输出: D1::display()</span>
+}</pre>
+
+            <span class="step">🔢 逐行分析：</span>
+            <p>① <strong><code>virtual void display()</code></strong> — 加上 virtual，表示这个函数以后可能被派生类"覆盖"（override）</p>
+            <p>② <strong><code>fun(Base *ptr)</code></strong> — 参数是基类指针，可以接受任何派生类对象的地址（因为派生类对象也是基类对象）</p>
+            <p>③ <strong><code>ptr->display()</code></strong> — 如果没加 virtual，不管 ptr 指向谁，永远调 Base 的 display</p>
+            <p>④ 加了 virtual 后 → 系统在运行时检查 ptr 实际指向的对象类型，调用对应版本的 display</p>
+            <p style="color:#2563eb;font-weight:600">这就是"一个接口，多种方法"的多态！</p>
+          </div>
+        </div>
+
+        <h2>纯虚函数与抽象类 <span class="tag tag-h">必考</span></h2>
+
+        <div class="concept-pair">
+          <div class="left">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#1e40af">虚函数</h4>
+            <p style="font-size:12px;margin:0"><code>virtual void func();</code><br>有函数体（可以为空）<br>所在类可以实例化</p>
+          </div>
+          <div class="right">
+            <h4 style="margin:0 0 4px;font-size:13px;color:#dc2626">纯虚函数</h4>
+            <p style="font-size:12px;margin:0"><code>virtual void func() = 0;</code><br>没有函数体<br>所在类是抽象类，<strong>不能实例化</strong></p>
+          </div>
+        </div>
+
+        <div class="exbox">
+          <div class="ext"><span class="tag tag-h">必考</span> 抽象类示例</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Shape</span> {               <span class="c">// 抽象基类</span>
+<span class="k">public:</span>
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">area</span>() = <span class="n">0</span>;   <span class="c">// 纯虚函数，=0 表示"我不实现，子类去实现"</span>
+};
+
+<span class="k">class</span> <span class="t">Circle</span>: <span class="k">public</span> <span class="t">Shape</span> {
+    <span class="t">float</span> r;
+<span class="k">public:</span>
+    Circle(<span class="t">float</span> rr): r(rr) {}
+    <span class="t">void</span> <span class="f">area</span>() { cout << <span class="n">3.14</span> * r * r; }  <span class="c">// 派生类必须实现</span>
+};
+
+<span class="c">// Shape s;     ❌ 抽象类不能创建对象</span>
+Shape *p;          <span class="c">// ✅ 可以声明指针</span>
+Circle c(<span class="n">15</span>);
+p = &c;
+p->area();         <span class="c">// 调 Circle 的 area() → 3.14×15×15 = 706.5</span></pre>
+            <p style="font-size:13px;margin-top:6px">抽象类的<strong>设计意图</strong>：定一套标准（接口），所有子类必须遵守。就像驾照考试规则全国统一，但每个考场具体执行。</p>
+          </div>
+        </div>
+
+        <!-- 虚析构函数 -->
+        <h2>虚析构函数 <span class="tag tag-m">常考</span></h2>
+
+        <div class="cbox">
+          <strong>⚠ 一个隐蔽的 BUG：</strong><br>
+          <code>Base *p = new Circle(...);</code> → 然后用 <code>delete p;</code> 释放。<br>
+          如果基类的析构函数不是虚函数 → <strong>只会调用 Base 的析构函数，Circle 的析构函数不会执行！</strong>可能导致内存泄漏。<br>
+          解决办法：把基类的析构函数声明为 <code>virtual ~Base()</code>
+        </div>
+
+        <!-- ===== 新增：应用实例（课件6.4.3） ===== -->
+        <h2>综合应用实例：Shape 类族 <span class="tag tag-m">常考</span></h2>
+        <div class="exbox">
+          <div class="ext">例6.4 利用虚函数和抽象类实现"形状"类族</div>
+          <div class="exb">
+            <pre><span class="k">class</span> <span class="t">Shape</span> {                                      <span class="c">// 抽象基类</span>
+<span class="k">public:</span>
+    <span class="k">virtual</span> <span class="t">float</span> <span class="f">area</span>() <span class="k">const</span> { <span class="k">return</span> <span class="n">0.0</span>; }    <span class="c">// 虚函数</span>
+    <span class="k">virtual</span> <span class="t">float</span> <span class="f">volume</span>() <span class="k">const</span> { <span class="k">return</span> <span class="n">0.0</span>; }  <span class="c">// 虚函数</span>
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">shapeName</span>() <span class="k">const</span> = <span class="n">0</span>;          <span class="c">// 纯虚函数</span>
+};
+
+<span class="k">class</span> <span class="t">Point</span>: <span class="k">public</span> <span class="t">Shape</span> {                         <span class="c">// 点 → 公有继承 Shape</span>
+<span class="k">protected:</span> <span class="t">float</span> x, y;
+<span class="k">public:</span>
+    Point(<span class="t">float</span> a = <span class="n">0</span>, <span class="t">float</span> b = <span class="n">0</span>): x(a), y(b) {}
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">shapeName</span>() <span class="k">const</span> { cout << <span class="s">"Point:"</span>; }  <span class="c">// 实现纯虚函数</span>
+};
+
+<span class="k">class</span> <span class="t">Circle</span>: <span class="k">public</span> <span class="t">Point</span> {                          <span class="c">// 圆 → 继承 Point</span>
+<span class="k">protected:</span> <span class="t">float</span> radius;
+<span class="k">public:</span>
+    Circle(<span class="t">float</span> x, <span class="t">float</span> y, <span class="t">float</span> r): Point(x, y), radius(r) {}
+    <span class="k">virtual</span> <span class="t">float</span> <span class="f">area</span>() <span class="k">const</span> { <span class="k">return</span> <span class="n">3.14159</span> * radius * radius; }
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">shapeName</span>() <span class="k">const</span> { cout << <span class="s">"Circle:"</span>; }
+};
+
+<span class="k">class</span> <span class="t">Cylinder</span>: <span class="k">public</span> <span class="t">Circle</span> {                        <span class="c">// 圆柱 → 继承 Circle</span>
+    <span class="t">float</span> height;
+<span class="k">public:</span>
+    Cylinder(<span class="t">float</span> x, <span class="t">float</span> y, <span class="t">float</span> r, <span class="t">float</span> h): Circle(x, y, r), height(h) {}
+    <span class="k">virtual</span> <span class="t">float</span> <span class="f">area</span>() <span class="k">const</span> { <span class="k">return</span> <span class="n">2</span> * Circle::area() + <span class="n">2</span> * <span class="n">3.14159</span> * radius * height; }
+    <span class="k">virtual</span> <span class="t">float</span> <span class="f">volume</span>() <span class="k">const</span> { <span class="k">return</span> Circle::area() * height; }
+    <span class="k">virtual</span> <span class="t">void</span> <span class="f">shapeName</span>() <span class="k">const</span> { cout << <span class="s">"Cylinder:"</span>; }
+};
+
+<span class="c">// 使用：基类指针 → 动态关联</span>
+Shape *pt;
+pt = &point;  pt->shapeName();  <span class="c">// Point:</span>
+pt = &circle; pt->shapeName();  <span class="c">// Circle:</span>
+pt = &cyl;    pt->shapeName();  <span class="c">// Cylinder:</span>
+<span class="c">// area() 和 volume() 同样动态关联</span></pre>
+            <p style="font-size:13px">这个例子完美展示了：抽象基类(Shape)定义统一接口 → 派生类逐层实现具体功能 → 基类指针实现多态。是理解虚函数+抽象类的最佳范例。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p style="text-align:center;color:#6c757d;font-size:13px;padding:30px 0">📚 基于 C++ 课堂课件整理 · 零基础学习版 · 配合题库练习效果更佳</p>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open')}
+function closeS(){document.getElementById('sidebar').classList.remove('open')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('show',window.scrollY>300)})
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));document.querySelectorAll(`.sidebar a[href="#${e.target.id}"]`).forEach(a=>a.classList.add('active'))}})},{rootMargin:'-80px 0px -60% 0px'});
+document.querySelectorAll('section').forEach(s=>observer.observe(s));
+</script>
+
+</body>
+</html>
